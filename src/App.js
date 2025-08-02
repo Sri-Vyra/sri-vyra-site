@@ -1,25 +1,37 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Courses from './components/Courses';
+import Footer from './components/Footer';
+import HeroSection from './components/HeroSection';
 import WhyVyra from './components/WhyVyra';
-import Contact from './components/Contact';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react';
+import CoursesPage from './components/CoursesPage';
+import CourseDetails from './components/CourseDetails'; // ✅ NEW
+import AboutPage from './components/AboutPage';
+import RegistrationForm from './components/RegistrationForm';
 
 function App() {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
-
   return (
-    <div className="font-sans">
-      <Navbar />
-      <Hero />
-      <Courses />
-      <WhyVyra />
-      <Contact />
-    </div>
+    <Router>
+      <div className="font-sans">
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <HeroSection />
+                <WhyVyra />
+              </>
+            }
+          />
+          <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/courses/:id" element={<CourseDetails />} /> {/* ✅ NEW route */}
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/register" element={<RegistrationForm />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

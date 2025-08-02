@@ -1,31 +1,46 @@
-import { motion } from 'framer-motion';
+import React from 'react';
+import logo from '../assets/logo1.png';
+import { FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-6 py-4 shadow-sm bg-white fixed top-0 left-0 right-0 z-50">
-      <motion.h1
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-2xl font-bold text-blue-600"
-      >
-        Sri Vyra
-      </motion.h1>
+    <nav className="bg-white text-navy px-6 py-4 shadow-sm">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Left: Logo + Menu */}
+        <div className="flex items-center space-x-8">
+          <Link to="/">
+            <img src={logo} alt="Sri Vyra Logo" className="h-14 w-auto" />
+          </Link>
 
-      <ul className="hidden md:flex gap-6 text-gray-700 font-medium">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Courses</a></li>
-        <li><a href="#">Mentorship</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+          <ul className="hidden md:flex space-x-4 text-sm uppercase tracking-wide">
+            {[
+              { label: 'Home', path: '/' },
+              { label: 'Courses', path: '/courses' },
+              { label: 'Mentorship', path: '/mentorship' },
+              { label: 'Registration Form', path: '/register' },
+              { label: 'About', path: '/about' }
+            ].map(({ label, path }, i) => (
+              <li key={i}>
+                <Link
+                  to={path}
+                  className="text-black px-3 py-1 rounded-full cursor-pointer transition border border-transparent hover:bg-black hover:text-white hover:border-black"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        className="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-blue-700 transition-all"
-      >
-        Apply Now
-      </motion.button>
+        {/* Right: Login/Signup */}
+        <div className="flex items-center space-x-3">
+          <button className="flex items-center space-x-2 border border-black text-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white transition">
+            <FaUser />
+            <span>Login / Sign Up</span>
+          </button>
+        </div>
+      </div>
     </nav>
   );
 }
