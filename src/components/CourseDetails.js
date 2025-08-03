@@ -1,115 +1,108 @@
-// CourseDetails.js
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
-const courseData = {
-  elite: {
+const tracks = [
+  {
     title: 'Elite Track',
+    id: 'elite',
     price: '₹5,999',
-    originalPrice: '₹7,999',
     duration: '4 Months',
     jobSupport: '8 Months',
     referral: '₹500',
-    payment: [
-      'Slot Booking Fee: ₹999',
-      'After 12 hours of sessions: ₹5,000'
-    ],
     features: [
-      'Python, SQL - Concepts & Programming',
-      'Big Data: Hadoop, Sqoop, Hive',
-      'Apache Spark: Core, Arch, Programming, AWS Integration',
+      'Python, SQL, Hadoop, Spark',
       'Cloud: AWS, Azure, GCP',
       'Resume & Job Profile Setup',
       '5 Company-Based Mock Interviews',
-      'Interview Kits & Q&A Sessions',
-      'Mock Interview Pattern: Tech R1 (20m), Tech R2 (60m), Client/HR/MR (optional)',
-      'Detailed Feedback & Interview Questions'
-    ]
+      'Interview Kits & Q&A Sessions'
+    ],
+    highlight: false
   },
-  premium: {
+  {
     title: 'Premium Track',
+    id: 'premium',
     price: '₹9,999',
-    originalPrice: '₹11,999',
     duration: '4 Months',
     jobSupport: '8 Months',
     referral: '₹1,000',
-    payment: [
-      'Slot Booking Fee: ₹999',
-      'After 12 hours: ₹4,500',
-      'After 30 hours: ₹4,500'
-    ],
     features: [
       'Everything in Elite Track',
-      'Live Doubt Sessions',
       'Advanced Mock Interviews',
-      'Resume Forwarding & Shortlisting Help',
-      'Company-Based Mock Interviews (5 Full Sets)',
-      'Detailed Feedback & Q&A',
-      'Company-Specific Interview Kits'
-    ]
+      'Live Doubt Sessions',
+      'Profile Shortlisting Support',
+      'Resume Forwarding to Companies'
+    ],
+    highlight: true
   },
-  mentorship: {
+  {
     title: 'Mentorship Track',
+    id: 'mentorship',
     price: '₹12,999',
-    originalPrice: '₹19,999',
     duration: '4 Months',
     jobSupport: '8 Months',
     referral: '₹2,000',
-    payment: [
-      'Slot Booking Fee: ₹999',
-      'After 12 hours: ₹6,000',
-      'After 30 hours: ₹6,000'
-    ],
     features: [
       'Everything in Premium Track',
       '1-on-1 Personal Mentorship',
       'Exclusive Project Guidance',
       'Referral Drives',
       'On-call Interview Preparation'
-    ]
+    ],
+    highlight: false
   }
-};
+];
 
-function CourseDetails() {
-  const { id } = useParams();
-  const course = courseData[id];
+function CoursesPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  if (!course) {
-    return <div className="text-center py-20">Course not found.</div>;
-  }
+  const handleViewDetails = (trackId) => {
+    if (user) {
+      navigate(`/courses/${trackId}`);
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 text-gray-800">
-      <Link to="/courses" className="text-blue-600 underline text-sm mb-4 inline-block">&larr; Back to Courses</Link>
-      <h1 className="text-3xl font-bold mb-2">{course.title}</h1>
-      <p className="text-xl text-blue-600 font-semibold mb-4">
-        {course.price} <span className="text-gray-500 line-through text-sm ml-2">{course.originalPrice}</span>
-      </p>
-      <p className="text-sm text-gray-700 mb-2"><strong>Duration:</strong> {course.duration}</p>
-      <p className="text-sm text-gray-700 mb-4"><strong>Job Support:</strong> {course.jobSupport}</p>
-      <ul className="list-disc list-inside mb-4 space-y-2">
-        {course.features.map((f, i) => (
-          <li key={i}>{f}</li>
-        ))}
-      </ul>
-      <div className="mb-4">
-        <h3 className="font-semibold text-lg mb-2">Payment Structure:</h3>
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-          {course.payment.map((p, i) => (
-            <li key={i}>{p}</li>
-          ))}
-        </ul>
+    <section className="bg-white text-gray-800 px-6 md:px-12 py-20">
+      <div className="max-w-7xl mx-auto text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold">Explore Our Tracks</h2>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">Choose a track that fits your journey – and take the leap into your data career.</p>
       </div>
-      <p className="text-sm text-green-700 font-semibold mb-2">Referral Bonus: {course.referral}</p>
-      <a
-        href="https://wa.me/918712395259"
-        className="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-full transition"
-        target="_blank" rel="noreferrer"
-      >
-        Book Slot on WhatsApp
-      </a>
-    </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {tracks.map((track, index) => (
+          <motion.div
+            key={index}
+            className={`border rounded-2xl p-6 shadow-md hover:shadow-lg transition ${
+              track.highlight ? 'border-blue-600' : 'border-gray-200'
+            }`}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <h3 className="text-xl font-bold mb-2">{track.title}</h3>
+            <p className="text-2xl font-semibold text-blue-600 mb-4">{track.price}</p>
+            <ul className="text-sm text-gray-700 space-y-2 mb-6">
+              {track.features.map((feature, i) => (
+                <li key={i}>• {feature}</li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handleViewDetails(track.id)}
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full transition text-sm"
+            >
+              View Details
+            </button>
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 }
 
-export default CourseDetails;
+export default CoursesPage;

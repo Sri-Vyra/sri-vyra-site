@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import logo from '../assets/logo1.png';
 import { FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 function Navbar() {
+  const { user, logout } = useAuth();
+  const [firstName, setFirstName] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedDisplayName = localStorage.getItem('displayName');
+    const fallbackName = user?.displayName || storedDisplayName || '';
+    if (fallbackName) {
+      setFirstName(fallbackName.split(' ')[0]);
+    } else {
+      const profileData = JSON.parse(localStorage.getItem('vyraUserProfile'));
+      if (profileData?.firstName) {
+        setFirstName(profileData.firstName);
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleProfileClick = () => {
+    setShowDropdown(false);
+    navigate('/profile');
+  };
+
+  const handleLogout = () => {
+    logout();
+    setShowDropdown(false);
+    navigate('/');
+  };
+
   return (
     <nav className="bg-white text-navy px-6 py-4 shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -17,8 +58,8 @@ function Navbar() {
             {[
               { label: 'Home', path: '/' },
               { label: 'Courses', path: '/courses' },
-              { label: 'Mentorship', path: '/mentorship' },
               { label: 'Registration Form', path: '/register' },
+              { label: 'Batches', path: '/batches' },
               { label: 'About', path: '/about' }
             ].map(({ label, path }, i) => (
               <li key={i}>
@@ -33,12 +74,51 @@ function Navbar() {
           </ul>
         </div>
 
-        {/* Right: Login/Signup */}
-        <div className="flex items-center space-x-3">
-          <button className="flex items-center space-x-2 border border-black text-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white transition">
-            <FaUser />
-            <span>Login / Sign Up</span>
-          </button>
+        {/* Right: Profile Dropdown */}
+        <div className="relative flex items-center space-x-3" ref={dropdownRef}>
+          {user ? (
+            <>
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center space-x-2 border border-black text-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white transition"
+              >
+                <FaUser />
+                <span>Hi, {firstName}</span>
+              </button>
+              {showDropdown && (
+                <div className="absolute right-0 top-12 w-40 bg-white border rounded-lg shadow-lg p-2 z-50 text-sm">
+                  <button
+                    onClick={handleProfileClick}
+                    className="block w-full text-left px-2 py-1 hover:bg-gray-100 rounded"
+                  >
+                    👤 Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-2 py-1 text-red-600 hover:bg-gray-100 rounded"
+                  >
+                    🚪 Logout
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="flex items-center space-x-2 border border-black text-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white transition"
+              >
+                <FaUser />
+                <span>Login</span>
+              </Link>
+              <Link
+                to="/signup"
+                className="text-sm text-green-700 border border-green-600 px-4 py-1 rounded-full hover:bg-green-600 hover:text-white transition"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
