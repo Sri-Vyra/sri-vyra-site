@@ -79,6 +79,14 @@ function RegistrationForm() {
     });
   };
 
+  const backgrounds = [
+    'Testing', 'Support Roles', 'Software Developer', 'ETL Tester', 'Data Analyst',
+    'Business Analyst', 'Network Engineer', 'System Admin', 'Other'
+  ];
+
+  const experienceOptions = ['Fresher', '1 year', '2 years', '3 years', '4 years', '5 years', '8 years', '10+ years'];
+  const gapYearOptions = ['No career Gap', 'Fresher - No break', 'Fresher - 1 year Gap', 'Fresher - 2 years Gap', 'Fresher - 3+ years Gap', 'Experienced - 1 year Gap', 'Experienced - 2 years Gap', 'Experienced - 3 years Gap', 'Experienced - 4 years Gap', ' Experienced - 5 years Gap', 'Experienced - 6+ years Gap'];
+
   return (
     <div className="min-h-[90vh] flex items-start justify-center px-6 py-16 bg-white mt-12">
       <div className="w-full max-w-xl">
@@ -93,10 +101,7 @@ function RegistrationForm() {
             {[ 
               { name: 'name', label: 'Full Name', type: 'text', required: true },
               { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-              { name: 'email', label: 'Email Address', type: 'email', required: true },
-              { name: 'background', label: 'Previous Background', type: 'text' },
-              { name: 'experience', label: 'Years of Experience', type: 'text' },
-              { name: 'gapYears', label: 'No. of Gap Years', type: 'text' },
+              { name: 'email', label: 'Email Address', type: 'email', required: true }
             ].map(({ name, label, type, required = false }) => (
               <div className="relative" key={name}>
                 <input
@@ -117,6 +122,37 @@ function RegistrationForm() {
               </div>
             ))}
 
+            {/* Background Dropdown */}
+            <div className="relative">
+              <select
+                name="background"
+                value={formData.background}
+                onChange={handleChange}
+                className="w-full border-b-2 border-black bg-transparent pt-6 pb-2 focus:outline-none focus:border-blue-600"
+              >
+                <option value="" disabled>Select Previous Background</option>
+                {backgrounds.map((option, i) => (
+                  <option key={i} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Experience Dropdown */}
+            <div className="relative">
+              <select
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+                className="w-full border-b-2 border-black bg-transparent pt-6 pb-2 focus:outline-none focus:border-blue-600"
+              >
+                <option value="" disabled>Years of Experience</option>
+                {experienceOptions.map((option, i) => (
+                  <option key={i} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Career Gap Yes/No */}
             <div className="relative">
               <select
                 name="careerGap"
@@ -128,6 +164,21 @@ function RegistrationForm() {
                 <option value="" disabled>Career Gap (Yes/No)</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
+              </select>
+            </div>
+
+            {/* Gap Years Dropdown */}
+            <div className="relative">
+              <select
+                name="gapYears"
+                value={formData.gapYears}
+                onChange={handleChange}
+                className="w-full border-b-2 border-black bg-transparent pt-6 pb-2 focus:outline-none focus:border-blue-600"
+              >
+                <option value="" disabled>No. of Gap Years</option>
+                {gapYearOptions.map((option, i) => (
+                  <option key={i} value={option}>{option}</option>
+                ))}
               </select>
             </div>
 
@@ -146,11 +197,7 @@ function RegistrationForm() {
               </select>
             </div>
 
-            {[
-              { name: 'slotAmount', label: 'Slot Amount' },
-              { name: 'term1Amount', label: 'Term 1 Amount' },
-              { name: 'term2Amount', label: 'Term 2 Amount' }
-            ].map(({ name, label }) => (
+            {[{ name: 'slotAmount', label: 'Slot Amount' }, { name: 'term1Amount', label: 'Term 1 Amount' }, { name: 'term2Amount', label: 'Term 2 Amount' }].map(({ name, label }) => (
               <div className="relative" key={name}>
                 <input
                   type="text"
@@ -177,16 +224,13 @@ function RegistrationForm() {
                 required
                 className="w-full border-b-2 border-black bg-transparent pt-6 pb-2 focus:outline-none focus:border-blue-600"
               >
-                <option value="" disabled>Slot Confirmed (Yes/No)</option>
+                <option value="" disabled>Slot Confirmed</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
             </div>
 
-            {[ 
-              { name: 'referredBy', label: 'Referred By Name', type: 'text' },
-              { name: 'referralPhone', label: 'Referral Phone Number', type: 'tel' }
-            ].map(({ name, label, type }) => (
+            {[{ name: 'referredBy', label: 'Referred By Name', type: 'text' }, { name: 'referralPhone', label: 'Referral Phone Number', type: 'tel' }].map(({ name, label, type }) => (
               <div className="relative" key={name}>
                 <input
                   type={type}

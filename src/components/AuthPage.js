@@ -68,7 +68,7 @@ function AuthPage({ isLogin = false }) {
 
       navigate('/register');
     } catch (err) {
-      toast.error('Something went wrong. Try again.');
+      toast.error('Invalid credentials . Try again.');
     }
   };
 
