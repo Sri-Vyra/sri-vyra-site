@@ -12,6 +12,9 @@ import { AuthProvider } from './components/AuthContext'; // ✅ Import the Auth 
 import AuthPage from './components/AuthPage';
 import { Toaster } from 'react-hot-toast';
 import ProfilePage from './components/ProfilePage';
+import EliteTrack from './components/EliteTrack';
+import PremiumTrack from './components/PremiumTrack';
+import MentorshipTrack from './components/MentorshipTrack';
 
 function App() {
   return (
@@ -37,6 +40,9 @@ function App() {
             <Route path="/login" element={<AuthPage isLogin={true} />} />
             <Route path="/signup" element={<AuthPage isLogin={false} />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/courses/elite" element={<EliteTrack />} />
+            <Route path="/courses/premium" element={<PremiumTrack />} />
+            <Route path="/courses/mentorship" element={<MentorshipTrack />} />
           </Routes>
           <Footer />
         </div>

@@ -58,8 +58,8 @@ function Navbar() {
             {[
               { label: 'Home', path: '/' },
               { label: 'Courses', path: '/courses' },
+               { label: 'Batches', path: '/batches' },
               { label: 'Registration Form', path: '/register' },
-              { label: 'Batches', path: '/batches' },
               { label: 'About', path: '/about' }
             ].map(({ label, path }, i) => (
               <li key={i}>

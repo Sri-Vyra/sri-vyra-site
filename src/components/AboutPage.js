@@ -67,22 +67,24 @@ function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="max-w-6xl mx-auto py-16 px-6 grid md:grid-cols-2 gap-12">
+      <section className="max-w-6xl mx-auto py-16 px-6 grid md:grid-cols-2 gap-12 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
           <h2 className="text-2xl font-semibold mb-4">Our Vision</h2>
           <p className="text-gray-700 leading-relaxed">
             To build a value-first, learner-centric ecosystem where commitment meets opportunity. We envision Sri Vyra as a trusted academy that nurtures not just coders, but thinkers — individuals with clarity, courage, and character — ready to take on the tech world with responsibility and resilience.
           </p>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
           <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
           <p className="text-gray-700 leading-relaxed">
             To empower learners — from freshers and working professionals to those restarting after a career break — with the technical depth, mindset, and mentorship required to become top-tier data professionals — across roles like Data Engineer, Big Data Engineer, Hadoop Specialist, and Cloud Data Engineers on AWS, Azure, and GCP.

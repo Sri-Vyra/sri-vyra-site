@@ -1,21 +1,21 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const tracks = [
   {
     title: 'Elite Track',
     id: 'elite',
     price: '₹5,999',
-    duration: '4 Months',
-    jobSupport: '8 Months',
+    duration: '3 Months',
+    jobSupport: 'NA',
     referral: '₹500',
     features: [
       'Python, SQL, Hadoop, Spark',
-      'Cloud: AWS, Azure, GCP',
-      'Resume & Job Profile Setup',
-      '5 Company-Based Mock Interviews',
-      'Interview Kits & Q&A Sessions'
+      'Cloud: AWS',
+      'NO Live Doubt Sessions',
+      'NO Profile Shortlisting Support',
+      'NO Resume Forwarding to Companies'
     ],
     highlight: false
   },
@@ -40,7 +40,7 @@ const tracks = [
     id: 'mentorship',
     price: '₹12,999',
     duration: '4 Months',
-    jobSupport: '8 Months',
+    jobSupport: '18 Months',
     referral: '₹2,000',
     features: [
       'Everything in Premium Track',
@@ -53,25 +53,62 @@ const tracks = [
   }
 ];
 
+const comparisonData = [
+  ['Actual Price', '₹7,999', '₹11,999', '₹19,999'],
+  ['Discounted Price', '₹5,999', '₹9,999', '₹12,999'],
+  ['Referral Bonus', '₹500', '₹1,000', '₹2,000'],
+  ['Duration', '3 Months', '4 Months', '6 Months'],
+  ['Live Doubt Sessions', '✓', '✓', '✓'],
+  ['Job Support', '—', '8 Months', '18 Months'],
+  ['Mock Interviews', '—', '5 Full Sets + Advanced', '5 Sets + On-call Prep'],
+  ['Interview Feedback', '—', '✓', '✓'],
+  ['Interview Preparation Kit', '—', '✓', '✓'],
+  ['Company Specific Interview Kit', '—', '✓', '✓'],
+  ['Interview Q&A Sessions', '—', '✓', '✓'],
+  ['Resume Forwarding', '—', '✓', '✓'],
+  ['1-on-1 Mentorship', '—', '—', '✓'],
+  ['Payment Structure', '₹999 + ₹5,000', '₹999 + ₹4,500 + ₹4,500', '₹999 + ₹6,000 + ₹6,000']
+];
+
 function CoursesPage() {
+  const [showFull, setShowFull] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleProtectedClick = (route) => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      navigate(route);
+    }
+  };
+
+  const handleShowMore = () => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      setShowFull(true);
+    }
+  };
+
   return (
     <section className="bg-white text-gray-800 px-6 md:px-12 py-20">
-      <div className="max-w-7xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold">Explore Our Tracks</h2>
-        <p className="text-gray-600 mt-2 text-sm md:text-base">Choose a track that fits your journey – and take the leap into your data career.</p>
+      {/* Intro Section */}
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <h2 className="text-4xl font-bold mb-4">Explore Our Tracks</h2>
+        <p className="text-gray-600 text-lg">
+          Choose your journey, build your career. Sri Vyra provides industry-focused training and unmatched job support.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Cards Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {tracks.map((track, index) => (
-          <motion.div
+          <div
             key={index}
-            className={`border rounded-2xl p-6 shadow-md hover:shadow-lg transition ${
-              track.highlight ? 'border-blue-600' : 'border-gray-200'
+            className={`border-2 rounded-2xl p-6 transition-transform transform hover:scale-105 bg-white shadow-md hover:shadow-xl ${
+              track.highlight ? 'border-blue-600' : 'border-gray-300'
             }`}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <h3 className="text-xl font-bold mb-2">{track.title}</h3>
             <p className="text-2xl font-semibold text-blue-600 mb-4">{track.price}</p>
@@ -80,99 +117,78 @@ function CoursesPage() {
                 <li key={i}>• {feature}</li>
               ))}
             </ul>
-            <Link
-              to={`/courses/${track.id}`}
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full transition text-sm"
+            <button
+              onClick={() => handleProtectedClick(`/courses/${track.id}`)}
+              className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-full text-sm transition"
             >
               View Details
-            </Link>
-          </motion.div>
+            </button>
+          </div>
         ))}
       </div>
 
       {/* Comparison Table */}
-        <div className="overflow-x-auto mt-16">
-        <h2 className="text-2xl font-bold mb-6 text-center">Track Comparison</h2>
-        <table className="min-w-full border border-gray-300 text-sm md:text-base text-left">
+            <div className="overflow-x-auto mt-20 max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold mb-6 text-center">Track Comparison</h2>
+        <div className="rounded-xl overflow-hidden border border-black">
+          <table className="min-w-full text-sm md:text-base text-center border-collapse">
             <thead>
-            <tr className="bg-gray-100">
-                <th className="p-3 border">Feature</th>
-                <th className="p-3 border text-blue-600 font-bold">Elite</th>
-                <th className="p-3 border text-blue-600 font-bold">Premium</th>
-                <th className="p-3 border text-blue-600 font-bold">Mentorship</th>
+            <tr className="text-black font-semibold text-base border-b border-black">
+              <th className="p-4 border-r border-black">Feature</th>
+              <th className="p-4 border-r border-black relative">
+                Elite
+              </th>
+              <th className="p-4 border-r border-black relative">
+                Premium
+                <span className="absolute -top-0 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                  🌟 Most Chosen
+                </span>
+              </th>
+              <th className="p-4 relative">
+                Mentorship
+                <span className="absolute -top-0 left-2 bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                  🎯 Mentor Exclusive
+                </span>
+              </th>
             </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td className="p-3 border">Actual Price</td>
-                <td className="p-3 border">₹7,999</td>
-                <td className="p-3 border">₹11,999</td>
-                <td className="p-3 border">₹19,999</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Discounted Price</td>
-                <td className="p-3 border">₹5,999</td>
-                <td className="p-3 border">₹9,999</td>
-                <td className="p-3 border">₹12,999</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Duration</td>
-                <td className="p-3 border">4 Months</td>
-                <td className="p-3 border">4 Months</td>
-                <td className="p-3 border">4 Months</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Job Support</td>
-                <td className="p-3 border">8 Months</td>
-                <td className="p-3 border">8 Months</td>
-                <td className="p-3 border">8 Months</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Referral Bonus</td>
-                <td className="p-3 border">₹500</td>
-                <td className="p-3 border">₹1,000</td>
-                <td className="p-3 border">₹2,000</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Mock Interviews</td>
-                <td className="p-3 border">5 Full Sets</td>
-                <td className="p-3 border">5 Full Sets + Advanced</td>
-                <td className="p-3 border">5 Sets + On-call Prep</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Live Doubt Sessions</td>
-                <td className="p-3 border">✓</td>
-                <td className="p-3 border">✓</td>
-                <td className="p-3 border">✓</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Resume Forwarding</td>
-                <td className="p-3 border">—</td>
-                <td className="p-3 border">✓</td>
-                <td className="p-3 border">✓</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">1-on-1 Mentorship</td>
-                <td className="p-3 border">—</td>
-                <td className="p-3 border">—</td>
-                <td className="p-3 border">✓</td>
-            </tr>
-            <tr>
-                <td className="p-3 border">Payment Structure</td>
-                <td className="p-3 border">
-                ₹999 + ₹5,000
-                </td>
-                <td className="p-3 border">
-                ₹999 + ₹4,500 + ₹4,500
-                </td>
-                <td className="p-3 border">
-                ₹999 + ₹6,000 + ₹6,000
-                </td>
-            </tr>
-            </tbody>
-        </table>
+          </thead>
+          <tbody>
+            {(showFull ? comparisonData : comparisonData.slice(0, 3)).map((row, i) => (
+              <tr key={i} className="border-t border-black">
+                {row.map((cell, j) => {
+                  // Highlight premium (j==2) and mentorship (j==3)
+                  const isPremium = j === 2;
+                  const isMentorship = j === 3;
+                  return (
+                    <td
+                      key={j}
+                      className={`p-4 border-r border-black transition duration-300 transform text-center ${
+                        isPremium || isMentorship
+                          ? 'hover:scale-105 bg-black-50 font-medium'
+                          : ''
+                      }`}
+                    >
+                      {cell}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+          </table>
         </div>
 
+        {!showFull && (
+          <div className="text-center mt-6">
+            <button
+              onClick={handleShowMore}
+              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition font-semibold"
+            >
+              View Full Comparison
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
