@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import logo from '../assets/logo1.png';
 import { FaUser } from 'react-icons/fa';
+import { ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
@@ -46,7 +47,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white text-navy px-6 py-4 shadow-sm">
+    <nav className="bg-white text-navy px-6 py-4 shadow-sm z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Logo + Menu */}
         <div className="flex items-center space-x-8">
@@ -58,7 +59,7 @@ function Navbar() {
             {[
               { label: 'Home', path: '/' },
               { label: 'Courses', path: '/courses' },
-               { label: 'Batches', path: '/batches' },
+              { label: 'Practice', path: '/practice' },
               { label: 'Registration Form', path: '/register' },
               { label: 'About', path: '/about' }
             ].map(({ label, path }, i) => (
@@ -84,18 +85,20 @@ function Navbar() {
               >
                 <FaUser />
                 <span>Hi, {firstName}</span>
+                <ChevronDown size={16} />
               </button>
+
               {showDropdown && (
-                <div className="absolute right-0 top-12 w-40 bg-white border rounded-lg shadow-lg p-2 z-50 text-sm">
+                <div className="absolute right-0 top-12 w-36 bg-white border border-gray-200 rounded-xl shadow-md z-50">
                   <button
                     onClick={handleProfileClick}
-                    className="block w-full text-left px-2 py-1 hover:bg-gray-100 rounded"
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-xl transition text-center"
                   >
                     👤 Profile
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-2 py-1 text-red-600 hover:bg-gray-100 rounded"
+                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 rounded-b-xl transition text-center"
                   >
                     🚪 Logout
                   </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
 const Signup = () => {
@@ -10,38 +10,31 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const batchId = '25EL01'; // Will make dynamic later
-
   const handleSignup = async () => {
     setLoading(true);
     try {
+      // 1. Create user in Firebase Authentication
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       const uid = userCred.user.uid;
 
-      const batchRef = doc(db, 'batches', batchId);
-      const batchSnap = await getDoc(batchRef);
-      if (!batchSnap.exists()) throw new Error('Batch not found in Firestore');
-
-      const currentCount = batchSnap.data().studentCounter || 1;
-      const studentId = 'A' + String(currentCount).padStart(4, '0');
-      const fullCode = `${batchId}-${studentId}`;
-
+      // 2. Store user profile in Firestore under 'users/{uid}'
       await setDoc(doc(db, 'users', uid), {
         uid,
         name,
         email,
         phone,
-        batchId,
-        studentId,
-        fullCode,
-        createdAt: new Date()
+        createdAt: new Date(),
+        access: {
+          python: false,
+          sql: false,
+          pyspark: false,
+          interview: false,
+          daily: false,
+          common: false
+        }
       });
 
-      await updateDoc(batchRef, {
-        studentCounter: currentCount + 1
-      });
-
-      alert(`Signup successful!\nStudent ID: ${fullCode}`);
+      alert('Signup successful!');
     } catch (err) {
       console.error(err);
       alert('Signup failed: ' + err.message);

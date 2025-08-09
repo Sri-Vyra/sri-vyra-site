@@ -3,20 +3,21 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import toast from 'react-hot-toast';
 import { updateProfile } from 'firebase/auth';
-import { Eye, EyeOff } from 'lucide-react'; // 👁️ For password toggle
+import { Eye, EyeOff } from 'lucide-react';
+import { db } from './firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { getDoc } from 'firebase/firestore';
 
 function AuthPage({ isLogin = false }) {
   const navigate = useNavigate();
   const { login, signup } = useAuth();
 
-  // Form fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
-
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,37 +39,90 @@ function AuthPage({ isLogin = false }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateFields()) return;
+  e.preventDefault();
+  if (!validateFields()) return;
 
-    try {
-      if (isLogin) {
-        await login(email, password);
-        toast.success('Logged in successfully!');
-      } else {
-        const userCredential = await signup(email, password);
-        const user = userCredential.user;
+  const defaultAccess = {
+    python: false,
+    sql: false,
+    interview: false,
+    daily: false,
+    common: false,
+    pysparkBasic: false,
+    pysparkIntermediate: false,
+    pysparkAdvanced: false,
+    pysparkAWS: false,
+    bigdataHadoop: false,
+    bigdataSqoop: false,
+    bigdataHive: false,
+    bigdataConcepts: false,
+    pysparkConcepts: false,
+    dailyAnnouncements: false,
+  };
 
-        await updateProfile(user, {
-          displayName: `${firstName} ${lastName}`,
-        });
+  try {
+    if (isLogin) {
+      const userCredential = await login(email, password);
+      const user = userCredential.user;
 
-        const profileData = {
-          phone,
-          location,
-          firstName,
-          lastName,
-        };
+      const userRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(userRef);
 
-        localStorage.setItem('vyraUserProfile', JSON.stringify(profileData));
-        localStorage.setItem('displayName', `${firstName} ${lastName}`);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        const existingAccess = userData.access || {};
+        const updatedAccess = { ...defaultAccess, ...existingAccess };
 
-        toast.success('Account created successfully!');
+        const hasMissingFields = Object.keys(defaultAccess).some(
+          (key) => updatedAccess[key] !== existingAccess[key]
+        );
+
+        if (hasMissingFields) {
+          await setDoc(userRef, { access: updatedAccess }, { merge: true });
+          console.log('User access fields updated for login');
+        }
+
+        localStorage.setItem('vyraUserProfile', JSON.stringify({
+          phone: userData.phone || '',
+          location: userData.location || '',
+          firstName: userData.firstName || '',
+          lastName: userData.lastName || '',
+        }));
+
+        localStorage.setItem('displayName', user.displayName || '');
+        localStorage.setItem('access', JSON.stringify(updatedAccess));
       }
 
-      navigate('/register');
+      toast.success('Logged in successfully!');
+    } else {
+      const userCredential = await signup(email, password);
+      const user = userCredential.user;
+
+      await updateProfile(user, {
+        displayName: `${firstName} ${lastName}`,
+      });
+
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email,
+        phone,
+        location,
+        firstName,
+        lastName,
+        createdAt: new Date(),
+        access: defaultAccess,
+      });
+
+      localStorage.setItem('vyraUserProfile', JSON.stringify({ phone, location, firstName, lastName }));
+      localStorage.setItem('displayName', `${firstName} ${lastName}`);
+      localStorage.setItem('access', JSON.stringify(defaultAccess));
+
+      toast.success('Account created successfully!');
+    }
+      navigate('/');
     } catch (err) {
-      toast.error('Invalid credentials . Try again.');
+      toast.error('Invalid credentials. Try again.');
+      console.error(err);
     }
   };
 
@@ -169,7 +223,7 @@ function AuthPage({ isLogin = false }) {
             {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
           </div>
 
-          {/* Password + toggle */}
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
@@ -200,7 +254,6 @@ function AuthPage({ isLogin = false }) {
           </button>
         </form>
 
-        {/* Switch link */}
         <p className="text-center text-sm mt-6">
           {isLogin ? (
             <>

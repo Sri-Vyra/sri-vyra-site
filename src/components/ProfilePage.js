@@ -36,16 +36,46 @@ function ProfilePage() {
     }));
   };
 
-  const handleSave = () => {
-    const updatedProfile = {
-      ...profileData,
-      lastUpdated: new Date().toLocaleString()
+      const handleSave = async () => {
+      const updatedProfile = {
+        ...profileData,
+        lastUpdated: new Date().toLocaleString(),
+      };
+
+      setProfileData(updatedProfile);
+      setLastUpdated(updatedProfile.lastUpdated);
+      localStorage.setItem('vyraUserProfile', JSON.stringify(updatedProfile));
+      setIsEditing(false);
+
+      // Prepare URL-encoded form data
+      const profileToSend = {
+        ...updatedProfile,
+        uid: user?.uid || '',
+      };
+
+      const formBody = new URLSearchParams(profileToSend).toString();
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxj0vjj14q0ysB6pK8xrjt370gGeAe4TQpFaVQBZriWftKGv7JY2KELiagltBPXVYR3/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formBody,
+        });
+
+        const result = await response.text();
+        console.log("✅ Profile sent to Google Sheet:", result);
+      } catch (error) {
+        console.error("❌ Failed to send profile to Google Sheet:", error);
+      }
+
+      // 🎉 Show confetti if profile is fully completed
+      if (completionPercent === 100 && typeof window.confetti === 'function') {
+        window.confetti({ particleCount: 100, spread: 160 });
+      }
     };
-    setProfileData(updatedProfile);
-    setLastUpdated(updatedProfile.lastUpdated);
-    localStorage.setItem('vyraUserProfile', JSON.stringify(updatedProfile));
-    setIsEditing(false);
-  };
+
 
   useEffect(() => {
     if (profileData.lastUpdated) setLastUpdated(profileData.lastUpdated);

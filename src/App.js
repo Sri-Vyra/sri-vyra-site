@@ -8,13 +8,17 @@ import CoursesPage from './components/CoursesPage';
 import CourseDetails from './components/CourseDetails';
 import AboutPage from './components/AboutPage';
 import RegistrationForm from './components/RegistrationForm';
-import { AuthProvider } from './components/AuthContext'; // ✅ Import the Auth context
+import { AuthProvider } from './components/AuthContext';
 import AuthPage from './components/AuthPage';
 import { Toaster } from 'react-hot-toast';
 import ProfilePage from './components/ProfilePage';
 import EliteTrack from './components/EliteTrack';
 import PremiumTrack from './components/PremiumTrack';
 import MentorshipTrack from './components/MentorshipTrack';
+import ContentPage from './components/Practice/ContentPage';
+import PracticePage from './components/Practice/PracticePage';
+import ProblemsListPage from './components/Practice/ProblemsListPage'; // ✅ CORRECTED
+import ProblemPage from './components/Practice/ProblemPage';           // ✅ CORRECTED
 
 function App() {
   return (
@@ -43,6 +47,10 @@ function App() {
             <Route path="/courses/elite" element={<EliteTrack />} />
             <Route path="/courses/premium" element={<PremiumTrack />} />
             <Route path="/courses/mentorship" element={<MentorshipTrack />} />
+            <Route path="/practice" element={<PracticePage />} />
+            <Route path="/practice/:track" element={<ProblemsListPage />} />
+            <Route path="/practice/:track/problem/:problemId" element={<ProblemPage />} />
+            <Route path="/content/:id" element={<ContentPage />} />
           </Routes>
           <Footer />
         </div>
