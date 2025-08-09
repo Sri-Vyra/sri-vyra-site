@@ -23,7 +23,6 @@
     "react-router-dom": "^7.7.1",
     "react-scripts": "5.0.1",
     "react-simple-code-editor": "^0.14.1",
-    "react-split-pane": "^0.1.92",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
