@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
@@ -20,16 +20,13 @@ import PracticePage from './components/Practice/PracticePage';
 import ProblemsListPage from './components/Practice/ProblemsListPage'; 
 import ProblemPage from './components/Practice/ProblemPage';     
 import ScrollToTop from './components/ScrollToTop';    
-import AnnouncementBar from './components/AnnouncementBar';
+/* import AnnouncementBar from './components/AnnouncementBar'; */
 
 function AppRoutes() {
-  const location = useLocation();
-  const isHome = location.pathname === '/';
 
   return (
     <>
       <Navbar />
-      {isHome && <AnnouncementBar />}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<><HeroSection /><WhyVyra /></>} />
