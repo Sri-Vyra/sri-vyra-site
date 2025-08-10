@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo1.png';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   const handleSubmit = (e) => {
@@ -55,10 +56,18 @@ Email: ${email}`;
           <div>
             <h3 className="text-lg font-semibold mb-2">Pages</h3>
             <ul className="text-sm space-y-1 text-gray-700">
-              <li><a href="#home" className="hover:text-blue-600 transition">Home</a></li>
-              <li><a href="#courses" className="hover:text-blue-600 transition">Courses</a></li>
-              <li><a href="#whyvyra" className="hover:text-blue-600 transition">About</a></li>
-              <li><a href="#contact" className="hover:text-blue-600 transition">Contact</a></li>
+              <li>
+                <Link to="/" className="hover:text-blue-600 transition">Home</Link>
+              </li>
+              <li>
+                <Link to="/courses" className="hover:text-blue-600 transition">Courses</Link>
+              </li>
+              <li>
+                <Link to="/practice" className="hover:text-blue-600 transition">Practice</Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-blue-600 transition">About</Link>
+              </li>
             </ul>
           </div>
         </motion.div>
@@ -130,7 +139,7 @@ Email: ${email}`;
         >
           <h3 className="text-lg font-semibold mb-2">Our Vision</h3>
           <p className="text-sm text-gray-600">
-            To build a value-first, learner-centric ecosystem where commitment meets opportunity. We envision Sri Vyra as a trusted academy nurturing not just coders, but thinkers — ready to take on the tech world.
+            To build a value-first, learner-centric ecosystem where commitment meets opportunity. We envision Sri Runa Vyra as a trusted academy nurturing not just coders, but thinkers — ready to take on the tech world.
           </p>
         </motion.div>
 

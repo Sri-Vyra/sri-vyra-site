@@ -159,7 +159,7 @@ export default function PracticePage() {
   };
 
   if (!userData) {
-    return <p className="text-center py-20 text-gray-600">Loading your access...</p>;
+    return <p className="text-center py-20 text-gray-600">Access Locked? Contact Admin or Register Today...</p>;
   }
 
   return (

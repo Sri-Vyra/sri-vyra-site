@@ -76,7 +76,7 @@ function AboutPage() {
           >
           <h2 className="text-2xl font-semibold mb-4">Our Vision</h2>
           <p className="text-gray-700 leading-relaxed">
-            To build a value-first, learner-centric ecosystem where commitment meets opportunity. We envision Sri Vyra as a trusted academy that nurtures not just coders, but thinkers — individuals with clarity, courage, and character — ready to take on the tech world with responsibility and resilience.
+            To build a value-first, learner-centric ecosystem where commitment meets opportunity. We envision Sri Runa Vyra as a trusted academy that nurtures not just coders, but thinkers — individuals with clarity, courage, and character — ready to take on the tech world with responsibility and resilience.
           </p>
         </motion.div>
         <motion.div
@@ -132,7 +132,7 @@ function AboutPage() {
             I'm Rupesh Phanindra Sai — a data engineering mentor focused on building long-term tech careers. I've worked hands-on with Hadoop, Spark, AWS, and scalable pipelines across enterprise systems.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            My passion lies not just in solving data problems, but mentoring others to approach them with confidence, discipline, and real-world clarity — that's the soul behind Sri Vyra.
+            My passion lies not just in solving data problems, but mentoring others to approach them with confidence, discipline, and real-world clarity — that's the soul behind Sri Vyra / Sri Runa Vyra.
           </p>
         </motion.div>
       </section>
