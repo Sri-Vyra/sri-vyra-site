@@ -7,54 +7,6 @@ import { db } from '../firebase';
 
 const practiceTracks = [
   {
-    id: 'daily-announcements',
-    title: 'Daily Announcements',
-    emoji: '📢',
-    problems: 'Important daily updates & mentor notes',
-    accessKey: 'dailyAnnouncements',
-    type: 'problem', 
-  },
-  {
-    id: 'daily',
-    title: 'Daily Challenges',
-    emoji: '📆',
-    problems: '1 Problem every day to build habit',
-    accessKey: 'daily',
-    type: 'problem',
-  },
-  {
-    id: 'bigdata-concepts',
-    title: 'BigData - Concepts',
-    emoji: '🧠',
-    problems: 'Theory behind Big Data systems',
-    accessKey: 'bigdataConcepts',
-    type: 'content', 
-  },
-  {
-    id: 'pyspark-concepts',
-    title: 'PySpark - Concepts',
-    emoji: '🌀',
-    problems: 'All theory about PySpark',
-    accessKey: 'pysparkConcepts',
-    type: 'content',
-  },
-  {
-    id: 'python',
-    title: 'Python Practice',
-    emoji: '🐍',
-    problems: '40+ Problems on Loops, Lists, Functions',
-    accessKey: 'python',
-    type: 'problem',
-  },
-  {
-    id: 'sql',
-    title: 'SQL Practice',
-    emoji: '🛢️',
-    problems: '80+ Queries on Joins, Aggregates, Subqueries',
-    accessKey: 'sql',
-    type: 'problem',
-  },
-  {
     id: 'bigdata-hadoop',
     title: 'BigData - Hadoop',
     emoji: '🐘',
@@ -76,6 +28,22 @@ const practiceTracks = [
     emoji: '🧬',
     problems: 'Querying Big Data using HiveQL',
     accessKey: 'bigdataHive',
+    type: 'problem',
+  },
+  {
+    id: 'python',
+    title: 'Python Practice',
+    emoji: '🐍',
+    problems: '40+ Problems on Loops, Lists, Functions',
+    accessKey: 'python',
+    type: 'problem',
+  },
+  {
+    id: 'sql',
+    title: 'SQL Practice',
+    emoji: '🛢️',
+    problems: '80+ Queries on Joins, Aggregates, Subqueries',
+    accessKey: 'sql',
     type: 'problem',
   },
   {
@@ -124,10 +92,9 @@ const practiceTracks = [
     emoji: '🏢',
     problems: 'Curated problems for job interviews',
     accessKey: 'interview',
-    type: 'content',
+    type: 'company',
   },
 ];
-
 
 export default function PracticePage() {
   const { user } = useAuth();
@@ -148,18 +115,25 @@ export default function PracticePage() {
     fetchUserData();
   }, [user]);
 
-  const handleClick = (id, hasAccess, type) => {
+  // ✅ Updated logic
+  const handleClick = (track, hasAccess) => {
     if (!hasAccess) return;
 
-    if (type === 'content') {
-      navigate(`/content/${id}`); // new route
-    } else {
-      navigate(`/practice/${id}`);
+    if (track.type === 'content') {
+      navigate(`/content/${track.id}`);
+    } else if (track.type === 'company') {
+      navigate(`/company-problems`);
+    } else if (track.type === 'problem') {
+      navigate(`/practice/${track.id}`);
     }
   };
 
   if (!userData) {
-    return <p className="text-center py-20 text-gray-600">Access Locked? Contact Admin or Register Today...</p>;
+    return (
+      <p className="text-center py-20 text-gray-600">
+        Access Locked? Contact Admin or Register Today...
+      </p>
+    );
   }
 
   return (
@@ -172,7 +146,7 @@ export default function PracticePage() {
           return (
             <div
               key={track.id}
-              onClick={() => handleClick(track.id, hasAccess, track.type)}
+              onClick={() => handleClick(track, hasAccess)}
               className={`relative rounded-2xl border border-gray-300 p-6 transition-transform transform hover:scale-105 bg-white shadow-md hover:shadow-xl cursor-pointer ${
                 !hasAccess ? 'opacity-50 pointer-events-none' : ''
               }`}

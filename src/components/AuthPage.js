@@ -43,8 +43,8 @@ function AuthPage({ isLogin = false }) {
   if (!validateFields()) return;
 
   const defaultAccess = {
-    python: false,
-    sql: false,
+    python: true,
+    sql: true,
     interview: false,
     daily: false,
     common: false,
@@ -111,6 +111,8 @@ function AuthPage({ isLogin = false }) {
         lastName,
         createdAt: new Date(),
         access: defaultAccess,
+        certificateIssued: false,
+        certificateEligible: false
       });
 
       localStorage.setItem('vyraUserProfile', JSON.stringify({ phone, location, firstName, lastName }));

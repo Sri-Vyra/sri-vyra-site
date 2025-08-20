@@ -60,8 +60,11 @@ function Navbar() {
               { label: 'Home', path: '/' },
               { label: 'Courses', path: '/courses' },
               { label: 'Practice', path: '/practice' },
-              { label: 'Registration Form', path: '/register' },
-              { label: 'About', path: '/about' }
+              { label: 'Syllabus', path: '/syllabus' },
+              { label: 'Mock Interviews', path: '/mock-interviews' },
+              { label: 'Certification', path: '/certification' },
+              { label: 'Registration', path: '/register' },
+              { label: 'About', path: '/about' },
             ].map(({ label, path }, i) => (
               <li key={i}>
                 <Link

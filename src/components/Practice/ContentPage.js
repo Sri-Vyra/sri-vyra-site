@@ -1,11 +1,13 @@
 // === src/components/Practice/ContentPage.js ===
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { interviewData } from './interviewQuestionsData';
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { interviewData } from "./interviewQuestionsData";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function ContentPage() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [expandedSections, setExpandedSections] = useState({});
@@ -21,7 +23,7 @@ export default function ContentPage() {
   };
 
   const scrollToTopic = (topicKey) => {
-    getTopicRef(topicKey)?.current?.scrollIntoView({ behavior: 'smooth' });
+    getTopicRef(topicKey)?.current?.scrollIntoView({ behavior: "smooth" });
     setExpandedSections((prev) => ({ ...prev, [topicKey]: true }));
   };
 
@@ -53,13 +55,111 @@ export default function ContentPage() {
     if (!keywords || !keywords.length) return text;
     let result = text;
     keywords.forEach((word) => {
-      const regex = new RegExp(`(${word})`, 'gi');
+      const regex = new RegExp(`(${word})`, "gi");
       result = result.replace(
         regex,
         '<span class="bg-yellow-200 font-semibold">$1</span>'
       );
     });
     return result;
+  };
+
+  // Function to parse and render answer properly
+  const renderAnswer = (answer, keywords = []) => {
+    const lines = answer.split("\n");
+
+    return (
+      <div className="space-y-2">
+        {lines.map((line, idx) => {
+          // Code block detection
+          if (line.startsWith("```")) {
+            return null; // skip, handled in block
+          }
+
+          // Numbered list (1., 2., etc.)
+          if (/^\d+\./.test(line.trim())) {
+            return (
+              <li
+                key={idx}
+                dangerouslySetInnerHTML={{
+                  __html: highlightKeywords(line.trim(), keywords),
+                }}
+                className="ml-6 list-decimal text-gray-700"
+              />
+            );
+          }
+
+          // Bullet point (- , * , 🔹)
+          if (/^[-*🔹]/.test(line.trim())) {
+            return (
+              <li
+                key={idx}
+                dangerouslySetInnerHTML={{
+                  __html: highlightKeywords(line.trim(), keywords),
+                }}
+                className="ml-6 list-disc text-gray-700"
+              />
+            );
+          }
+
+          // Code block rendering
+          if (line.includes("```bash") || line.includes("```java") || line.includes("```xml")) {
+            return null;
+          }
+
+          // Normal text
+          return (
+            <p
+              key={idx}
+              dangerouslySetInnerHTML={{
+                __html: highlightKeywords(line, keywords),
+              }}
+              className="text-gray-700"
+            />
+          );
+        })}
+        {/* Extract code blocks */}
+        {answer.split("```").map((block, i) => {
+          if (block.startsWith("bash")) {
+            return (
+              <SyntaxHighlighter
+                key={i}
+                language="bash"
+                style={oneLight}
+                className="rounded-lg shadow-md"
+              >
+                {block.replace("bash", "").trim()}
+              </SyntaxHighlighter>
+            );
+          }
+          if (block.startsWith("java")) {
+            return (
+              <SyntaxHighlighter
+                key={i}
+                language="java"
+                style={oneLight}
+                className="rounded-lg shadow-md"
+              >
+                {block.replace("java", "").trim()}
+              </SyntaxHighlighter>
+            );
+          }
+          if (block.startsWith("xml")) {
+            return (
+              <SyntaxHighlighter
+                key={i}
+                language="xml"
+                style={oneLight}
+                className="rounded-lg shadow-md"
+              >
+                {block.replace("xml", "").trim()}
+              </SyntaxHighlighter>
+            );
+          }
+          return null;
+        })}
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -75,6 +175,7 @@ export default function ContentPage() {
 
   return (
     <div className="min-h-screen px-6 md:px-20 py-12 bg-white text-gray-800 relative">
+      {/* Back + ReadTime */}
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -83,12 +184,18 @@ export default function ContentPage() {
           ← Back
         </button>
         {readTime > 0 && (
-          <span className="text-sm text-gray-600">Reading time: {readTime} min</span>
+          <span className="text-sm text-gray-600">
+            Reading time: {readTime} min
+          </span>
         )}
       </div>
 
-      <h1 className="text-4xl font-bold text-center mb-6">🎯 Common Interview Questions</h1>
+      {/* Title */}
+      <h1 className="text-4xl font-bold text-center mb-6">
+        🎯 Common Interview Questions
+      </h1>
 
+      {/* Search */}
       <div className="relative max-w-2xl mx-auto mb-6">
         <input
           type="text"
@@ -110,13 +217,15 @@ export default function ContentPage() {
                 }}
                 className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
               >
-                <span className="font-medium text-gray-800">{s.title}</span>: {s.question}
+                <span className="font-medium text-gray-800">{s.title}</span>:{" "}
+                {s.question}
               </li>
             ))}
           </ul>
         )}
       </div>
 
+      {/* Topic Buttons */}
       <div className="flex flex-wrap gap-4 justify-center mb-10">
         {Object.entries(interviewData).map(([key, { title }]) => (
           <button
@@ -129,6 +238,7 @@ export default function ContentPage() {
         ))}
       </div>
 
+      {/* Content */}
       <div className="space-y-8">
         {Object.entries(interviewData).map(([key, { title, emoji, questions }]) => {
           const filtered = questions.filter(
@@ -165,13 +275,8 @@ export default function ContentPage() {
                       key={i}
                       className="p-4 border-l-4 border-blue-400 bg-white/90 shadow-sm rounded group hover:bg-blue-50 hover:shadow-md transition"
                     >
-                      <h3 className="font-semibold text-lg mb-1">{qna.question}</h3>
-                      <p
-                        className="text-gray-700"
-                        dangerouslySetInnerHTML={{
-                          __html: highlightKeywords(qna.answer, qna.keywords),
-                        }}
-                      />
+                      <h3 className="font-semibold text-lg mb-2">{qna.question}</h3>
+                      {renderAnswer(qna.answer, qna.keywords)}
                     </div>
                   ))}
                 </div>

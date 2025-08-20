@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
 import WhyVyra from './components/WhyVyra';
 import CoursesPage from './components/CoursesPage';
+import SyllabusPage from './components/SyllabusPage'
+import MockInterviewsPage from './components/MockInterviewsPage'
+import CertificationPage from './components/CertificationPage';
 import CourseDetails from './components/CourseDetails';
 import AboutPage from './components/AboutPage';
 import RegistrationForm from './components/RegistrationForm';
@@ -20,6 +23,7 @@ import PracticePage from './components/Practice/PracticePage';
 import ProblemsListPage from './components/Practice/ProblemsListPage'; 
 import ProblemPage from './components/Practice/ProblemPage';     
 import ScrollToTop from './components/ScrollToTop';    
+import CompanyProblemsPage from './components/Practice/CompanyProblemsPage';
 /* import AnnouncementBar from './components/AnnouncementBar'; */
 
 function AppRoutes() {
@@ -44,6 +48,10 @@ function AppRoutes() {
         <Route path="/practice/:track" element={<ProblemsListPage />} />
         <Route path="/practice/:track/problem/:problemId" element={<ProblemPage />} />
         <Route path="/content/:id" element={<ContentPage />} />
+        <Route path="/company-problems" element={<CompanyProblemsPage />} />
+        <Route path="/syllabus" element={<SyllabusPage />} />
+        <Route path="/mock-interviews" element={<MockInterviewsPage />} />
+        <Route path="/certification" element={<CertificationPage />} />
       </Routes>
       <Footer />
     </>
