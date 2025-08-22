@@ -19,9 +19,7 @@ function Navbar() {
       setFirstName(fallbackName.split(' ')[0]);
     } else {
       const profileData = JSON.parse(localStorage.getItem('vyraUserProfile'));
-      if (profileData?.firstName) {
-        setFirstName(profileData.firstName);
-      }
+      if (profileData?.firstName) setFirstName(profileData.firstName);
     }
   }, [user]);
 
@@ -92,18 +90,45 @@ function Navbar() {
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 top-12 w-36 bg-white border border-gray-200 rounded-xl shadow-md z-50">
+                <div className="absolute right-0 top-12 w-42 bg-white border border-gray-200 rounded-xl shadow-md z-50">
+                  {/* Profile */}
                   <button
                     onClick={handleProfileClick}
-                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-xl transition text-center"
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition text-left flex items-center space-x-2 rounded-t-xl"
                   >
-                    👤 Profile
+                    👤 <span>Profile</span>
                   </button>
+
+                  {/* Application ID */}
+                  <Link
+                    to="/application-id"
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition text-left flex items-center space-x-2"
+                  >
+                    📝 <span>Application ID</span>
+                  </Link>
+
+                  {/* Certificates */}
+                  <Link
+                    to="/certification"
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition text-left flex items-center space-x-2"
+                  >
+                    🎓 <span>Certificates</span>
+                  </Link>
+
+                  {/* Receipts */}
+                  <Link
+                    to="/receipts"
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition text-left flex items-center space-x-2"
+                  >
+                    💳 <span> Receipts</span>
+                  </Link>
+
+                  {/* Logout */}
                   <button
                     onClick={handleLogout}
-                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 rounded-b-xl transition text-center"
+                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition text-left flex items-center space-x-2 rounded-b-xl"
                   >
-                    🚪 Logout
+                    🚪 <span> Logout</span>
                   </button>
                 </div>
               )}

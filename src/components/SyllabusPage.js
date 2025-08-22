@@ -348,7 +348,7 @@ function SyllabusPage() {
 
       {/* Hero */}
       <div className="bg-gradient-to-r from-indigo-500 via-pink-500 to-red-500 text-white text-center py-10 shadow-lg rounded-b-3xl">
-        <h1 className="text-4xl font-bold mb-3">Sri Vyra Cohort A25</h1>
+        <h1 className="text-4xl font-bold mb-3">Sri Vyra Cohort 25A</h1>
         <p className="text-lg">
           Your complete roadmap to mastering Big Data & Cloud 🚀
         </p>

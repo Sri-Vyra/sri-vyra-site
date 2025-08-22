@@ -24,6 +24,8 @@ import ProblemsListPage from './components/Practice/ProblemsListPage';
 import ProblemPage from './components/Practice/ProblemPage';     
 import ScrollToTop from './components/ScrollToTop';    
 import CompanyProblemsPage from './components/Practice/CompanyProblemsPage';
+import ApplicationIDPage from './components/ApplicationIDPage';
+import ReceiptsPage from './components/ReceiptsPage';
 /* import AnnouncementBar from './components/AnnouncementBar'; */
 
 function AppRoutes() {
@@ -52,6 +54,8 @@ function AppRoutes() {
         <Route path="/syllabus" element={<SyllabusPage />} />
         <Route path="/mock-interviews" element={<MockInterviewsPage />} />
         <Route path="/certification" element={<CertificationPage />} />
+        <Route path="/application-id" element={<ApplicationIDPage />} />
+        <Route path="/receipts" element={<ReceiptsPage />} />
       </Routes>
       <Footer />
     </>
