@@ -38,7 +38,7 @@ function SyllabusPage() {
         "Orientation + Big Data Overview",
         "Hadoop Basics + Ecosystem Introduction",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // resource
+        "https://youtu.be/ueDqxmZuP20", // resource
         ],
         [
         "2",
