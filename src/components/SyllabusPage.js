@@ -44,19 +44,19 @@ function SyllabusPage() {
         "2",
         "Aug-30",
         "Sat",
-        "Hadoop Deep Dive – Architecture",
-        "HDFS Concepts + Block Storage",
+        "Big Data Evolution",
+        "Cluster Management",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", // join link
-        "", // class not yet completed
+        "https://www.youtube.com/watch?v=Jo4IZxQYVZE", // class not yet completed
         ],
         [
         "2",
         "Aug-31",
         "Sun",
         "Linux Basics for Hadoop (File ops, users, perms)",
-        "Linux Advanced + Common Admin Commands",
+        "Linux Advanced + Hadoop Basic commands",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // resource
+        "https://www.youtube.com/watch?v=S5I-Ji_L-38", // resource
         ],
         [
         "3",
