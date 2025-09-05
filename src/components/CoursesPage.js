@@ -4,22 +4,6 @@ import { useAuth } from './AuthContext';
 
 const tracks = [
   {
-    title: 'Elite Track',
-    id: 'elite',
-    price: '₹5,999',
-    duration: '3 Months',
-    jobSupport: 'NA',
-    referral: '₹500',
-    features: [
-      'Python, SQL, Hadoop, Spark',
-      'Cloud: AWS',
-      'NO Live Doubt Sessions',
-      'NO Profile Shortlisting Support',
-      'NO Resume Forwarding to Companies'
-    ],
-    highlight: false
-  },
-  {
     title: 'Premium Track',
     id: 'premium',
     price: '₹9,999',
@@ -54,20 +38,20 @@ const tracks = [
 ];
 
 const comparisonData = [
-  ['Actual Price', '₹7,999', '₹11,999', '₹19,999'],
-  ['Discounted Price', '₹5,999', '₹9,999', '₹12,999'],
-  ['Referral Bonus', '₹500', '₹1,000', '₹2,000'],
-  ['Duration', '3 Months', '4 Months', '6 Months'],
-  ['Live Doubt Sessions', '✓', '✓', '✓'],
-  ['Job Support', '—', '8 Months', '18 Months'],
-  ['Mock Interviews', '—', '5 Full Sets + Advanced', '5 Sets + On-call Prep'],
-  ['Interview Feedback', '—', '✓', '✓'],
-  ['Interview Preparation Kit', '—', '✓', '✓'],
-  ['Company Specific Interview Kit', '—', '✓', '✓'],
-  ['Interview Q&A Sessions', '—', '✓', '✓'],
-  ['Resume Forwarding', '—', '✓', '✓'],
-  ['1-on-1 Mentorship', '—', '—', '✓'],
-  ['Payment Structure', '₹999 + ₹5,000', '₹999 + ₹4,500 + ₹4,500', '₹999 + ₹6,000 + ₹6,000']
+  ['Actual Price', '₹11,999', '₹19,999'],
+  ['Discounted Price', '₹9,999', '₹12,999'],
+  ['Referral Bonus', '₹1,000', '₹2,000'],
+  ['Duration', '3 Months', '4 Months'],
+  ['Live Doubt Sessions', '✓', '✓'],
+  ['Job Support', '8 Months', '18 Months'],
+  ['Mock Interviews', '5 Full Sets + Advanced', '5 Sets + On-call Prep'],
+  ['Interview Feedback', '✓', '✓'],
+  ['Interview Preparation Kit', '✓', '✓'],
+  ['Company Specific Interview Kit', '✓', '✓'],
+  ['Interview Q&A Sessions', '✓', '✓'],
+  ['Resume Forwarding', '✓', '✓'],
+  ['1-on-1 Mentorship', '—', '✓'],
+  ['Payment Structure', '₹999 + ₹4,500 + ₹4,500', '₹999 + ₹6,000 + ₹6,000']
 ];
 
 function CoursesPage() {
@@ -101,12 +85,12 @@ function CoursesPage() {
         </p>
       </div>
 
-      {/* Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      {/* Cards Section (center align for 2 cards) */}
+      <div className="flex flex-col md:flex-row justify-center gap-8 max-w-5xl mx-auto">
         {tracks.map((track, index) => (
           <div
             key={index}
-            className={`border-2 rounded-2xl p-6 transition-transform transform hover:scale-105 bg-white shadow-md hover:shadow-xl ${
+            className={`border-2 rounded-2xl p-6 transition-transform transform hover:scale-105 bg-white shadow-md hover:shadow-xl w-full md:w-1/2 ${
               track.highlight ? 'border-blue-600' : 'border-gray-300'
             }`}
           >
@@ -128,53 +112,36 @@ function CoursesPage() {
       </div>
 
       {/* Comparison Table */}
-            <div className="overflow-x-auto mt-20 max-w-7xl mx-auto">
+      <div className="overflow-x-auto mt-20 max-w-5xl mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-center">Track Comparison</h2>
         <div className="rounded-xl overflow-hidden border border-black">
           <table className="min-w-full text-sm md:text-base text-center border-collapse">
             <thead>
-            <tr className="text-black font-semibold text-base border-b border-black">
-              <th className="p-4 border-r border-black">Feature</th>
-              <th className="p-4 border-r border-black relative">
-                Elite
-              </th>
-              <th className="p-4 border-r border-black relative">
-                Premium
-                <span className="absolute -top-0 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
-                  🌟 Most Chosen
-                </span>
-              </th>
-              <th className="p-4 relative">
-                Mentorship
-                <span className="absolute -top-0 left-2 bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
-                  🎯 Mentor Exclusive
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {(showFull ? comparisonData : comparisonData.slice(0, 3)).map((row, i) => (
-              <tr key={i} className="border-t border-black">
-                {row.map((cell, j) => {
-                  // Highlight premium (j==2) and mentorship (j==3)
-                  const isPremium = j === 2;
-                  const isMentorship = j === 3;
-                  return (
-                    <td
-                      key={j}
-                      className={`p-4 border-r border-black transition duration-300 transform text-center ${
-                        isPremium || isMentorship
-                          ? 'hover:scale-105 bg-black-50 font-medium'
-                          : ''
-                      }`}
-                    >
-                      {cell}
-                    </td>
-                  );
-                })}
+              <tr className="text-black font-semibold text-base border-b border-black">
+                <th className="p-4 border-r border-black">Feature</th>
+                <th className="p-4 border-r border-black relative">
+                  Premium
+                  <span className="absolute -top-0 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                    🌟 Most Chosen
+                  </span>
+                </th>
+                <th className="p-4 relative">
+                  Mentorship
+                  <span className="absolute -top-0 left-2 bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                    🎯 Mentor Exclusive
+                  </span>
+                </th>
               </tr>
-            ))}
-          </tbody>
+            </thead>
+            <tbody>
+              {(showFull ? comparisonData : comparisonData.slice(0, 3)).map((row, i) => (
+                <tr key={i} className="border-t border-black">
+                  <td className="p-4 border-r border-black">{row[0]}</td>
+                  <td className="p-4 border-r border-black">{row[1]}</td>
+                  <td className="p-4">{row[2]}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
 

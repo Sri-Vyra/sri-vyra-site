@@ -13,6 +13,7 @@ import {
 function SyllabusPage() {
   const navigate = useNavigate();
   const [today, setToday] = useState("");
+  const [selectedCohort, setSelectedCohort] = useState("");
 
   useEffect(() => {
     const d = new Date();
@@ -23,8 +24,7 @@ function SyllabusPage() {
     setToday(formatted);
   }, []);
 
-  // Timeline Data
-  const syllabus = [
+const syllabus = [
     {
     phase: "Phase 1 – Foundation (Weeks 1–6)",
     objective: "Build strong fundamentals in Hadoop, Hive, Sqoop, SQL & Python.",
@@ -293,10 +293,8 @@ function SyllabusPage() {
     }
   ];
 
-  // Flatten sessions for progress calc
   const allSessions = syllabus.flatMap((p) => p.schedule);
 
-  // ✅ Progress Tracking State
   const [completed, setCompleted] = useState(() => {
     const stored = localStorage.getItem("completedSessions");
     return stored ? JSON.parse(stored) : {};
@@ -313,165 +311,186 @@ function SyllabusPage() {
     }));
   };
 
-  // Progress % calc
   const totalSessions = allSessions.length;
   const completedCount = Object.values(completed).filter(Boolean).length;
   const progress = totalSessions
     ? Math.round((completedCount / totalSessions) * 100)
     : 0;
 
-  // Download PDF
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = "/syllabus.pdf";
-    link.download = "SriVyra_Syllabus.pdf";
-    link.click();
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Back + Download */}
-      <div className="flex justify-between items-center p-6">
+      {/* Top Bar */}
+      <div className="flex justify-between items-center px-6 py-4 bg-white shadow-md rounded-b-2xl relative">
+        {/* Back Button */}
         <button
           onClick={() => navigate("/")}
-          className="px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition"
+          className="px-5 py-2 border border-black rounded-full hover:bg-black hover:text-white transition font-medium"
         >
           ← Back to Home
         </button>
-        <button
-          onClick={handleDownload}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
-        >
-          <FaDownload /> Download PDF
-        </button>
-      </div>
 
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-indigo-500 via-pink-500 to-red-500 text-white text-center py-10 shadow-lg rounded-b-3xl">
-        <h1 className="text-4xl font-bold mb-3">Sri Vyra Cohort 25A</h1>
-        <p className="text-lg">
-          Your complete roadmap to mastering Big Data & Cloud 🚀
-        </p>
-      </div>
-
-      {/* ✅ Progress Bar */}
-      <div className="w-full max-w-3xl mx-auto mt-8 px-6">
-        <div className="w-full bg-gray-200 rounded-full h-6 shadow-inner">
-          <div
-            className="bg-green-500 h-6 rounded-full transition-all duration-500 ease-in-out"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <p className="text-center mt-2 font-medium">
-          {completedCount} / {totalSessions} sessions completed ({progress}%)
-        </p>
-      </div>
-
-      {/* Phases */}
-      <div className="w-full max-w-10xl mx-auto p-6 space-y-12">
-        {syllabus.map((phase, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: idx * 0.2 }}
-            className="shadow-md rounded-2xl overflow-hidden bg-white"
+        {/* Centered Cohort Dropdown */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <select
+            value={selectedCohort}
+            onChange={(e) => setSelectedCohort(e.target.value)}
+            className="px-5 py-2 border border-black rounded-full focus:outline-none font-medium hover:bg-gray-100 transition cursor-pointer text-center"
+            style={{ textAlignLast: "center" }} // ensures selected value is centered
           >
-            {/* Phase Header */}
-            <div
-              className={`bg-gradient-to-r ${phase.color} text-white text-center py-4 rounded-t-2xl`}
-            >
-              <h2 className="text-2xl font-semibold">{phase.phase}</h2>
-              <p className="text-sm">{phase.objective}</p>
-            </div>
+            <option value="">-- Select Cohort --</option>
+            <option value="25A">Cohort 25A</option>
+            {/* Add more cohorts here */}
+          </select>
+        </div>
 
-            {/* Full-width Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1000px] border-collapse">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border p-2">Week</th>
-                    <th className="border p-2">Date</th>
-                    <th className="border p-2">Day</th>
-                    <th className="border p-2">Session 1</th>
-                    <th className="border p-2">Session 2</th>
-                    <th className="border p-2">Join Link</th>
-                    <th className="border p-2">Resource</th>
-                    <th className="border p-2">✅ Done</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {phase.schedule.map((row, i) => {
-                    const id = `${phase.phase}-${i}`; // unique ID
-                    const isToday = row[1] === today;
-
-                    return (
-                      <tr
-                        key={i}
-                        className={`${
-                          isToday ? "bg-yellow-100" : "hover:bg-purple-50"
-                        } transition text-center`}
-                      >
-                        {row.slice(0, 5).map((cell, j) => (
-                          <td key={j} className="border p-2">
-                            {cell}
-                          </td>
-                        ))}
-
-                        {/* Join Link */}
-                        <td className="border p-2">
-                          {row[5] ? (
-                            <a
-                              href={row[5]}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 flex items-center justify-center gap-1"
-                            >
-                              <FaLink /> Join
-                            </a>
-                          ) : (
-                            <span className="text-gray-500 italic">
-                              Not Available
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Resource */}
-                        <td className="border p-2">
-                          {row[6] ? (
-                            <a
-                              href={row[6]}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-red-500 hover:text-red-700 flex items-center justify-center gap-1"
-                            >
-                              <FaYoutube /> Watch
-                            </a>
-                          ) : (
-                            <span className="text-gray-500 italic">
-                              Class not yet completed
-                            </span>
-                          )}
-                        </td>
-
-                        {/* ✅ Completion Checkbox */}
-                        <td className="border p-2">
-                          <input
-                            type="checkbox"
-                            checked={!!completed[id]}
-                            onChange={() => toggleCompletion(id)}
-                            className="w-5 h-5 accent-green-600 cursor-pointer"
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-        ))}
+        {/* Download Button on Right */}
+        {selectedCohort && (
+          <button
+            onClick={() => {
+              const link = document.createElement("a");
+              link.href = `/${selectedCohort}.pdf`; // dynamic PDF path
+              link.download = `${selectedCohort}.pdf`;
+              link.click();
+            }}
+            className="flex items-center gap-2 px-5 py-2 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition shadow"
+          >
+            <FaDownload /> Download PDF
+          </button>
+        )}
       </div>
+
+      {/* Only show syllabus if cohort selected */}
+      {selectedCohort === "25A" && (
+        <>
+          {/* Hero */}
+          <div className="bg-gradient-to-r from-indigo-600 via-pink-500 to-red-500 text-white text-center py-12 shadow-lg rounded-b-3xl mt-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-3">
+              Sri Vyra Cohort 25A
+            </h1>
+            <p className="text-lg md:text-xl">
+              Your complete roadmap to mastering Big Data & Cloud 🚀
+            </p>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full max-w-3xl mx-auto mt-8 px-6">
+            <div className="w-full bg-gray-200 rounded-full h-6 shadow-inner">
+              <div
+                className="bg-green-500 h-6 rounded-full transition-all duration-700 ease-in-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="text-center mt-2 font-medium text-gray-700">
+              {completedCount} / {totalSessions} sessions completed ({progress}%)
+            </p>
+          </div>
+
+          {/* Phases */}
+          <div className="w-full max-w-10xl mx-auto p-6 space-y-12">
+            {syllabus.map((phase, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.2 }}
+                className="shadow-lg rounded-2xl overflow-hidden bg-white"
+              >
+                {/* Phase Header */}
+                <div
+                  className={`bg-gradient-to-r ${phase.color} text-white text-center py-4 rounded-t-2xl`}
+                >
+                  <h2 className="text-2xl font-semibold">{phase.phase}</h2>
+                  <p className="text-sm">{phase.objective}</p>
+                </div>
+
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[1000px] border-collapse text-sm md:text-base">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="border p-2">Week</th>
+                        <th className="border p-2">Date</th>
+                        <th className="border p-2">Day</th>
+                        <th className="border p-2">Session 1</th>
+                        <th className="border p-2">Session 2</th>
+                        <th className="border p-2">Join Link</th>
+                        <th className="border p-2">Resource</th>
+                        <th className="border p-2">✅ Done</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {phase.schedule.map((row, i) => {
+                        const id = `${phase.phase}-${i}`;
+                        const isToday = row[1] === today;
+
+                        return (
+                          <tr
+                            key={i}
+                            className={`${
+                              isToday
+                                ? "bg-yellow-100 font-semibold"
+                                : "hover:bg-purple-50"
+                            } transition text-center`}
+                          >
+                            {row.slice(0, 5).map((cell, j) => (
+                              <td key={j} className="border p-2">
+                                {cell}
+                              </td>
+                            ))}
+
+                            <td className="border p-2">
+                              {row[5] ? (
+                                <a
+                                  href={row[5]}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 flex items-center justify-center gap-1"
+                                >
+                                  <FaLink /> Join
+                                </a>
+                              ) : (
+                                <span className="text-gray-400 italic">
+                                  Not Available
+                                </span>
+                              )}
+                            </td>
+
+                            <td className="border p-2">
+                              {row[6] ? (
+                                <a
+                                  href={row[6]}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-red-500 hover:text-red-700 flex items-center justify-center gap-1"
+                                >
+                                  <FaYoutube /> Watch
+                                </a>
+                              ) : (
+                                <span className="text-gray-400 italic">
+                                  Class not yet completed
+                                </span>
+                              )}
+                            </td>
+
+                            <td className="border p-2">
+                              <input
+                                type="checkbox"
+                                checked={!!completed[id]}
+                                onChange={() => toggleCompletion(id)}
+                                className="w-5 h-5 accent-green-600 cursor-pointer"
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

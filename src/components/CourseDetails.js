@@ -5,22 +5,6 @@ import { useAuth } from './AuthContext';
 
 const tracks = [
   {
-    title: 'Elite Track',
-    id: 'elite',
-    price: '₹5,999',
-    duration: '4 Months',
-    jobSupport: '8 Months',
-    referral: '₹500',
-    features: [
-      'Python, SQL, Hadoop, Spark',
-      'Cloud: AWS, Azure, GCP',
-      'Resume & Job Profile Setup',
-      '5 Company-Based Mock Interviews',
-      'Interview Kits & Q&A Sessions'
-    ],
-    highlight: false
-  },
-  {
     title: 'Premium Track',
     id: 'premium',
     price: '₹9,999',
@@ -28,7 +12,7 @@ const tracks = [
     jobSupport: '8 Months',
     referral: '₹1,000',
     features: [
-      'Everything in Elite Track',
+      'Everything in Concepts',
       'Advanced Mock Interviews',
       'Live Doubt Sessions',
       'Profile Shortlisting Support',
