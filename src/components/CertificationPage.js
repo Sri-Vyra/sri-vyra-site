@@ -4,6 +4,8 @@ import logo from "../assets/logo1.png";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { useAuth } from "../components/AuthContext";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function CertificationPage() {
   const { user } = useAuth();
@@ -12,7 +14,6 @@ export default function CertificationPage() {
 
   const [issued, setIssued] = useState(false);
   const [certificateId, setCertificateId] = useState("");
-  const [certificateUrl] = useState(""); // future: Storage URL
   const certificateRef = useRef(null);
 
   // 🔹 Load user profile from Firestore
@@ -34,28 +35,67 @@ export default function CertificationPage() {
     loadProfile();
   }, [user]);
 
+  // 🔹 Generate certificate (only once)
   const handleGenerate = async () => {
     if (issued || !profile) return;
+
+    // Generate certificateId
     const id = `SV-${new Date().getFullYear()}-${uuidv4().split("-")[0].toUpperCase()}`;
     setCertificateId(id);
     setIssued(true);
 
-    // Save issued flag + certificateId
+    // Create shareable URL
+    const publicURL = `${window.location.origin}/verify-certificate/${id}`;
+
     try {
       await updateDoc(doc(db, "users", profile.id), {
         certificateIssued: true,
-        certificateId: id,
+        certificateId: id,             // save it in Firestore
         certificateIssuedAt: new Date(),
+        certificateURL: publicURL      // save the public link
       });
     } catch (err) {
       console.error("Error saving certificate:", err);
     }
 
-    // Confetti 🎉
+    // 🎉 Confetti
     try {
       const confetti = (await import("canvas-confetti")).default;
       confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
     } catch {}
+  };
+
+  // 🔹 Download Certificate
+  const handleDownload = async () => {
+    if (!certificateRef.current) return;
+
+    try {
+      const canvas = await html2canvas(certificateRef.current, {
+        scale: 2,
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF("landscape", "px", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const imgProps = {
+        width: canvas.width,
+        height: canvas.height,
+      };
+      const ratio = Math.min(pageWidth / imgProps.width, pageHeight / imgProps.height);
+
+      const imgWidth = imgProps.width * ratio;
+      const imgHeight = imgProps.height * ratio;
+      const x = (pageWidth - imgWidth) / 2;
+      const y = (pageHeight - imgHeight) / 2;
+
+      pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+      pdf.save(`${profile.fullName || "certificate"}.pdf`);
+    } catch (err) {
+      console.error("Error downloading certificate:", err);
+    }
   };
 
   if (loading) {
@@ -66,8 +106,8 @@ export default function CertificationPage() {
     return <div className="p-6 text-red-600">No profile found.</div>;
   }
 
-  // 🔹 States
-  const allowed = profile.certificateAllowed || false;
+  // 🔹 Access States
+  const allowed = profile.certificateAllowed || false; // admin-enabled
   const alreadyIssued = profile.certificateIssued || issued;
   const state = alreadyIssued ? "issued" : allowed ? "eligible" : "locked";
 
@@ -75,24 +115,15 @@ export default function CertificationPage() {
     <div className="min-h-[70vh] max-w-5xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl md:text-3xl font-semibold">🎓 Certification</h1>
+
         {state === "issued" && (
           <div className="flex items-center gap-3">
-            {certificateUrl && (
-              <a
-                href={certificateUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="border border-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white"
-              >
-                Download Certificate
-              </a>
-            )}
-            <a
-              href={`/verify-certificate/${profile.certificateId || certificateId}`}
-              className="border border-purple-600 text-purple-700 px-4 py-1 rounded-full text-sm hover:bg-purple-600 hover:text-white"
+            <button
+              onClick={handleDownload}
+              className="border border-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white"
             >
-              Public Verification
-            </a>
+              Download Certificate
+            </button>
           </div>
         )}
       </div>
@@ -122,86 +153,77 @@ export default function CertificationPage() {
 
       {state === "issued" && (
         <div className="border rounded-2xl p-6">
-          <p className="text-lg mb-4">
+          <p className="text-lg mb-4 text-center">
             Certificate issued on{" "}
             <strong>
-              {profile.certificateIssuedAt
+              {profile.certificateIssuedAt?.seconds
                 ? new Date(profile.certificateIssuedAt.seconds * 1000).toLocaleDateString()
                 : new Date().toLocaleDateString()}
             </strong>
           </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={certificateUrl || "#"}
-              onClick={(e) => {
-                if (!certificateUrl) e.preventDefault();
-              }}
-              className="border border-black px-4 py-1 rounded-full text-sm hover:bg-black hover:text-white"
-            >
-              View / Download
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                certificateUrl || window.location.href
-              )}`}
-              target="_blank"
-              rel="noreferrer"
-              className="border border-blue-600 text-blue-700 px-4 py-1 rounded-full text-sm hover:bg-blue-600 hover:text-white"
-            >
-              Share on LinkedIn
-            </a>
-            <a
-              href={`/verify-certificate/${profile.certificateId || certificateId}`}
-              className="border border-purple-600 text-purple-700 px-4 py-1 rounded-full text-sm hover:bg-purple-600 hover:text-white"
-            >
-              Public Verification
-            </a>
-          </div>
         </div>
       )}
 
       {/* Certificate Preview */}
       <div className="mt-10">
-        <h2 className="text-lg text-gray-600 mb-2">Certificate Preview</h2>
+        <h2 className="text-lg text-gray-600 mb-2 text-center">Certificate Preview</h2>
+
         <div
           ref={certificateRef}
-          className="relative w-full aspect-[1.4142/1] bg-white border rounded-2xl shadow-sm overflow-hidden p-10"
+          className={`relative w-full aspect-[1.4142/1] bg-white rounded-3xl shadow-sm overflow-hidden transition-all duration-300 ${
+            state !== "issued" ? "opacity-40 blur-sm pointer-events-none" : ""
+          }`}
           style={{ maxWidth: 1200 }}
         >
-          <div className="absolute inset-6 rounded-2xl border-4" />
+          {/* Inner frame */}
+          <div className="absolute inset-5 rounded-2xl border-[52px] border-gray-200" />
 
           {/* Header */}
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <img src={logo} alt="Sri Vyra" className="h-14" />
-            <div className="text-center">
-              <p className="text-xs tracking-widest text-gray-600">SRI VYRA EDUCATION</p>
-              <h1 className="text-3xl font-semibold tracking-wide">Certificate of Completion</h1>
-            </div>
+          <div className="relative z-10 mt-16 flex items-center justify-center">
+            <img src={logo} alt="Sri Vyra" className="h-32 md:h-32 pt-8" />
           </div>
 
-          {/* Body */}
-          <div className="mt-10 text-center">
-            <p className="text-sm text-gray-600">This certifies that</p>
-            <p className="text-4xl font-bold mt-2">{profile.fullName || user.displayName}</p>
-            <p className="text-sm text-gray-600 mt-4">has successfully completed the</p>
-            <p className="text-2xl font-semibold mt-1">{profile.course || "Elite Program"}</p>
-            <p className="text-gray-700 mt-1">Batch: {profile.batchCode || "2025-ELITE-01"}</p>
+          {/* Main text */}
+          <div className="relative z-10 mt-10 text-center px-6">
+            <p className="text-2xl font-semibold tracking-wide">
+              {profile.fullName || user.displayName}
+            </p>
+            <p className="mt-3 text-gray-600">has successfully passed all requirements for</p>
+            <h1 className="mt-3 text-2xl md:text-3xl font-extrabold tracking-tight text-slate-800">
+              Sri Vyra Certified: Cloud Data Professional
+            </h1>
           </div>
 
           {/* Footer */}
-          <div className="absolute bottom-8 left-0 right-0 px-10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Completion Date</p>
-                <p className="font-medium">{new Date().toISOString().split("T")[0]}</p>
+          <div className="absolute bottom-20 left-16 right-16 px-12 mb-12">
+            <div className="grid grid-cols-12 items-end">
+              <div className="col-span-7 text-[0.95rem] leading-6 text-slate-800 space-y-1">
+                <p>
+                  <span className="font-medium">Credential ID:</span>{" "}
+                  {profile.uid || certificateId || "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Certification number:</span>{" "}
+                  {profile.applicationId || certificateId || "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Earned on:</span>{" "}
+                  {profile.certificateIssuedAt?.seconds
+                    ? new Date(profile.certificateIssuedAt.seconds * 1000).toLocaleDateString()
+                    : new Date().toLocaleDateString()}
+                </p>
               </div>
-              <div className="text-center">
-                <p className="text-gray-600 text-sm">Certificate ID</p>
-                <p className="font-medium">{profile.certificateId || certificateId || "Will be generated"}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-gray-600 text-sm">Mentor</p>
-                <p className="font-medium">Rupesh Phanindra Sai Ande</p>
+
+              {/* Signature */}
+              <div className="col-span-5 text-right">
+                <div className="flex justify-end">
+                  <img
+                    src="/signature.png"
+                    alt="Mentor Signature"
+                    className="h-20 md:h-20 object-contain mr-4"
+                  />
+                </div>
+                <p className="font-semibold mb-2 text-xs">Rupesh Phanindra Sai Ande</p>
               </div>
             </div>
           </div>

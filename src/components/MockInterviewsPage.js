@@ -190,13 +190,13 @@ const MockInterviewsPage = () => {
               onChange={handleChange}
               className="w-full border-b-2 border-black bg-transparent pt-6 pb-2 focus:outline-none focus:border-blue-600"
             >
-              <option value="" disabled>Select Topic</option>
+              <option value="" disabled>Select Interview</option>
               {topics.map((t) => <option key={t.name} value={t.name}>{t.name}</option>)}
             </select>
           </div>
 
           {/* Dates as buttons */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             {availableDates.map((d) => {
               const disabled = getDateStatus(d);
               return (
@@ -205,7 +205,7 @@ const MockInterviewsPage = () => {
                   type="button"
                   onClick={() => !disabled && setFormData({ ...formData, date: d, time: "" })}
                   disabled={disabled}
-                  className={`px-4 py-2 border-b-2 rounded-full text-sm ${
+                  className={`px-4 py-2 border-b-2 rounded-full text-center text-sm ${
                     disabled
                       ? "border-gray-300 text-gray-400 cursor-not-allowed"
                       : formData.date === d
@@ -220,7 +220,7 @@ const MockInterviewsPage = () => {
           </div>
 
           {/* Times as buttons */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             {availableTimes.map((t) => {
               const slotKey = `${formData.topic}_${formData.date}_${t}`;
               const isBooked = bookedSlots.includes(slotKey);
