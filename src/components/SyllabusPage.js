@@ -65,7 +65,7 @@ const syllabus = [
         "Hadoop CLI Commands",
         "HDFS Hands-on (Put/Get/Copy/Move/Delete)",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/pdSaSSRDP14", // not yet completed
         ],
         [
         "3",
@@ -74,7 +74,7 @@ const syllabus = [
         "Hadoop Daemons & Cluster Setup Basics",
         "Hadoop Job Execution Lifecycle",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/RmYSOZQMMyk", // not yet completed
         ],
         [
         "4",
