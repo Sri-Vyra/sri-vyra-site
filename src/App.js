@@ -26,6 +26,7 @@ import ScrollToTop from './components/ScrollToTop';
 import CompanyProblemsPage from './components/Practice/CompanyProblemsPage';
 import ApplicationIDPage from './components/ApplicationIDPage';
 import ReceiptsPage from './components/ReceiptsPage';
+import AdminDashboard from "./components/AdminDashboard";
 /* import AnnouncementBar from './components/AnnouncementBar'; */
 
 function AppRoutes() {
@@ -56,6 +57,7 @@ function AppRoutes() {
         <Route path="/certification" element={<CertificationPage />} />
         <Route path="/application-id" element={<ApplicationIDPage />} />
         <Route path="/receipts" element={<ReceiptsPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </>

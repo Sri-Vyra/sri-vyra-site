@@ -47,19 +47,34 @@ const MockInterviewsPage = () => {
   // Update available dates when topic changes
   useEffect(() => {
     const selected = topics.find((t) => t.name === formData.topic);
-    setAvailableDates(selected ? selected.dates : []);
+    if (selected) {
+      const filteredDates = selected.dates.filter((d) => {
+        // keep date only if at least one slot is free
+        const allTimes = selected.times;
+        const bookedCount = allTimes.filter(t => bookedSlots.includes(`${formData.topic}_${d}_${t}`)).length;
+        return bookedCount < allTimes.length;
+      });
+      setAvailableDates(filteredDates);
+    } else {
+      setAvailableDates([]);
+    }
     setFormData(prev => ({ ...prev, date: "", time: "" }));
     setAvailableTimes([]);
-  }, [formData.topic, topics]);
+  }, [formData.topic, topics, bookedSlots]);
 
   // Update available times when date changes
   useEffect(() => {
     const selectedTopic = topics.find((t) => t.name === formData.topic);
     if (selectedTopic && formData.date) {
-      setAvailableTimes(selectedTopic.times);
+      const filteredTimes = selectedTopic.times.filter(
+        (t) => !bookedSlots.includes(`${formData.topic}_${formData.date}_${t}`)
+      );
+      setAvailableTimes(filteredTimes);
       setFormData(prev => ({ ...prev, time: "" }));
+    } else {
+      setAvailableTimes([]);
     }
-  }, [formData.date, formData.topic, topics]);
+  }, [formData.date, formData.topic, topics, bookedSlots]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -99,15 +114,6 @@ const MockInterviewsPage = () => {
     });
 
     setBookedSlots(prev => [...prev, `${formData.topic}_${formData.date}_${formData.time}`]);
-  };
-
-  // Compute which dates are fully booked
-  const getDateStatus = (date) => {
-    if (!formData.topic) return false;
-    const selectedTopic = topics.find(t => t.name === formData.topic);
-    const allTimes = selectedTopic.times;
-    const bookedCount = allTimes.filter(t => bookedSlots.includes(`${formData.topic}_${date}_${t}`)).length;
-    return bookedCount >= allTimes.length;
   };
 
   return (
@@ -197,51 +203,38 @@ const MockInterviewsPage = () => {
 
           {/* Dates as buttons */}
           <div className="flex flex-wrap gap-2 justify-center">
-            {availableDates.map((d) => {
-              const disabled = getDateStatus(d);
-              return (
-                <button
-                  key={d}
-                  type="button"
-                  onClick={() => !disabled && setFormData({ ...formData, date: d, time: "" })}
-                  disabled={disabled}
-                  className={`px-4 py-2 border-b-2 rounded-full text-center text-sm ${
-                    disabled
-                      ? "border-gray-300 text-gray-400 cursor-not-allowed"
-                      : formData.date === d
-                      ? "border-blue-600 text-navy"
-                      : "border-black text-navy"
-                  } focus:outline-none`}
-                >
-                  {d}
-                </button>
-              );
-            })}
+            {availableDates.map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setFormData({ ...formData, date: d, time: "" })}
+                className={`px-4 py-2 border-b-2 rounded-full text-center text-sm ${
+                  formData.date === d
+                    ? "border-blue-600 text-navy"
+                    : "border-black text-navy"
+                } focus:outline-none`}
+              >
+                {d}
+              </button>
+            ))}
           </div>
 
           {/* Times as buttons */}
           <div className="flex flex-wrap gap-2 justify-center">
-            {availableTimes.map((t) => {
-              const slotKey = `${formData.topic}_${formData.date}_${t}`;
-              const isBooked = bookedSlots.includes(slotKey);
-              return (
-                <button
-                  key={t}
-                  type="button"
-                  disabled={isBooked}
-                  onClick={() => setFormData({ ...formData, time: t })}
-                  className={`px-4 py-2 border-b-2 rounded-full text-sm ${
-                    isBooked
-                      ? "border-gray-300 text-gray-400 cursor-not-allowed"
-                      : formData.time === t
-                      ? "border-blue-600 text-navy"
-                      : "border-black text-navy"
-                  } focus:outline-none`}
-                >
-                  {t}
-                </button>
-              );
-            })}
+            {availableTimes.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setFormData({ ...formData, time: t })}
+                className={`px-4 py-2 border-b-2 rounded-full text-sm ${
+                  formData.time === t
+                    ? "border-blue-600 text-navy"
+                    : "border-black text-navy"
+                } focus:outline-none`}
+              >
+                {t}
+              </button>
+            ))}
           </div>
 
           <button
