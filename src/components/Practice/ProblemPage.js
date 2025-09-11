@@ -4,9 +4,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { problemsByTrack } from './ProblemData';
 import { Editor } from '@monaco-editor/react';
 import Confetti from 'react-confetti';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 const GOOGLE_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbwx5No_pdtpI68SEWh7vWLtsc92-bp6_Qu1JGAQjNKdygc6eOMIVn95d8DXLlCbRwAK/exec';
+  'https://script.google.com/macros/s/AKfycbwZDq9VEH8pO4_A8VxPNYWjs-I4BiwzzuzPj_7Rc_GdYMjoogutYInTKVbLrR8CQJwk/exec';
 
 const ProblemPage = () => {
   const { track, problemId } = useParams();
@@ -26,10 +28,16 @@ const ProblemPage = () => {
   const [previews, setPreviews] = useState([]);
   const timerRef = useRef(null);
 
+  // --- phone dropdown states ---
+  const [allUsers, setAllUsers] = useState([]); // fetched once from Firestore
+  const [searchPhone, setSearchPhone] = useState(''); // input value
+  const [filteredPhones, setFilteredPhones] = useState([]); // matches shown in dropdown
+  const [selectedUser, setSelectedUser] = useState(null); // chosen user object
+
   const allowedFileTypes = (() => {
-    if (track.includes('python') || track.includes('pyspark')) return ['.py'];
-    if (track.includes('sql')) return ['.sql'];
-    return ['.pdf'];
+    if (track?.includes('python') || track?.includes('pyspark')) return ['.py'];
+    if (track?.includes('sql')) return ['.sql'];
+    return ['.pdf', '.jpg', '.jpeg', '.png'];
   })();
 
   useEffect(() => {
@@ -39,7 +47,36 @@ const ProblemPage = () => {
     if (savedCode) setCode(savedCode);
     startTimer();
     return () => stopTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [track, problemId]);
+
+  // fetch users for phone dropdown (runs once)
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'users'));
+        const usersData = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setAllUsers(usersData);
+      } catch (err) {
+        console.error('Error fetching users for phone dropdown:', err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // filter phones while typing
+  useEffect(() => {
+    if (!searchPhone) {
+      setFilteredPhones([]);
+      return;
+    }
+    const q = allUsers.filter((u) => {
+      const phone = (u.phone || '').toString();
+      return phone.includes(searchPhone.trim());
+    });
+    // limit dropdown results
+    setFilteredPhones(q.slice(0, 50));
+  }, [searchPhone, allUsers]);
 
   const startTimer = () => {
     if (timerRef.current) return;
@@ -73,24 +110,30 @@ const ProblemPage = () => {
         const reader = new FileReader();
         reader.onload = async (e2) => {
           const b64 = e2.target.result.split(',')[1];
-          const resp = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: new URLSearchParams({
-              filename: file.name,
-              mimeType: file.type,
-              content: b64,
-            })
-          });
+          try {
+            const resp = await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST',
+              body: new URLSearchParams({
+                filename: file.name,
+                mimeType: file.type,
+                content: b64,
+              })
+            });
 
-          const result = await resp.json();
-          if (result.success) {
-            setPreviews(prev => [...prev, {
-              name: result.name,
-              viewUrl: result.url,
-              embedUrl: result.url.replace('/view', '/preview')
-            }]);
-          } else {
-            setUploadError(result.error);
+            // original logic expects JSON response from your Apps Script
+            const result = await resp.json();
+            if (result.success) {
+              setPreviews(prev => [...prev, {
+                name: result.name,
+                viewUrl: result.url,
+                embedUrl: result.url.replace('/view', '/preview')
+              }]);
+            } else {
+              setUploadError(result.error || 'Upload failed');
+            }
+          } catch (err) {
+            console.error('Upload error:', err);
+            // keep original behavior: show generic message
           }
         };
         reader.readAsDataURL(file);
@@ -98,9 +141,20 @@ const ProblemPage = () => {
     }
   };
 
+  // called when user selects a phone from the dropdown
+  const handleSelectPhone = (user) => {
+    setSelectedUser(user || null);
+    setSearchPhone(user?.phone || '');
+    setFilteredPhones([]);
+  };
+
   const handleSubmit = async () => {
     if (!code.trim()) {
       alert('⚠️ Code editor is empty. Please write your solution before submitting.');
+      return;
+    }
+    if (!selectedUser) {
+      alert('⚠️ Please select a phone number from the dropdown before submitting.');
       return;
     }
 
@@ -114,6 +168,11 @@ const ProblemPage = () => {
       answer: code,
       timeTaken: `${Math.floor(timer / 60)}m ${timer % 60}s`,
       timestamp: new Date().toLocaleString(),
+      // user details from selected user
+      phone: selectedUser.phone || '',
+      name: `${selectedUser.firstName || ''} ${selectedUser.lastName || ''}`.trim(),
+      email: selectedUser.email || '',
+      userId : selectedUser.applicationId || '',
     };
 
     try {
@@ -131,6 +190,7 @@ const ProblemPage = () => {
       setTimeout(() => setShowConfetti(false), 3000);
     } catch (error) {
       alert('❌ Submission failed.');
+      console.error('Submission error:', error);
     } finally {
       setSubmitting(false);
     }
@@ -232,6 +292,49 @@ const ProblemPage = () => {
                 <iframe src={f.embedUrl} width="100%" height="200" className="mt-2 border rounded" allow="autoplay" title={`preview-${i}`} />
               </div>
             ))}
+          </div>
+
+          {/* PHONE DROPDOWN (placed above buttons as requested) */}
+          <div className="mb-6 mt-6 max-w-md mx-auto relative">
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-medium whitespace-nowrap">Enter Phone No:</label>
+              <input
+                type="text"
+                value={searchPhone}
+                onChange={(e) => {
+                  setSearchPhone(e.target.value);
+                  setSelectedUser(null);
+                }}
+                placeholder="Search phone number..."
+                className="flex-1 border border-gray-400 rounded-full px-2 py-0 focus:outline-none focus:ring-1 focus:ring-black"
+              />
+            </div>
+
+            {/* Dropdown */}
+            {filteredPhones.length > 0 && !selectedUser && (
+              <ul className="absolute left-28 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-md max-h-40 overflow-y-auto z-10 text-sm">
+                {filteredPhones.map((u) => (
+                  <li
+                    key={u.id}
+                    onClick={() => {
+                      handleSelectPhone(u);
+                      setSearchPhone(u.phone); // put selected phone in input
+                    }}
+                    className="px-3 py-1 cursor-pointer hover:bg-gray-100"
+                  >
+                    {u.phone} — {u.firstName} {u.lastName}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* Selected user details */}
+            {selectedUser && (
+              <div className="mt-3 text-sm text-center text-gray-800 font-medium">
+                {selectedUser.firstName} {selectedUser.lastName} | {selectedUser.email} |{" "}
+                {selectedUser.applicationId}
+              </div>
+            )}
           </div>
 
           {/* Buttons */}
