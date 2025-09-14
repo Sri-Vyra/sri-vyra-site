@@ -83,7 +83,7 @@ const syllabus = [
         "Sqoop Basics + Import/Export",
         "Sqoop Advanced (Incremental, Joins, Eval)",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/Ma8FeR_IWFI", // not yet completed
         ],
         [
         "4",
@@ -92,7 +92,7 @@ const syllabus = [
         "Hive Overview + Architecture",
         "Hive DDL (Create DB, Tables, Partitions)",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/1CBmIpVyf1s", // not yet completed
         ],
         [
         "5",
