@@ -11,7 +11,7 @@ const MockInterviewsPage = () => {
   ];
 
   const topics = useMemo(() => [
-    { name: "Hadoop Interview", dates: ["2025-09-08", "2025-09-09", "2025-09-10"], times: ["18:30", "19:00", "19:30", "20:00"] },
+    { name: "Phase1 Interview", dates: ["2025-10-01", "2025-10-02", "2025-10-03"], times: ["18:30", "19:00", "19:30", "20:00"] },
   ], []);
 
   const [formData, setFormData] = useState({
