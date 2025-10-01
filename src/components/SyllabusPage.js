@@ -98,37 +98,28 @@ const syllabus = [
         "5",
         "Sep-20",
         "Sat",
-        "Hive DML (Insert, Select, Joins)",
-        "Hive Functions + Optimization",
+        "SQL Concepts",
+        "SQL Basics",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/50HC1kq27-M", // not yet completed
         ],
         [
         "5",
         "Sep-21",
         "Sun",
-        "Python Basics (Variables, Datatypes, Operators)",
-        "Python Flow Control (if, loops, functions)",
+        "SQL Joins + Concepts",
+        "SQL HandsOn",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/uk0wFxAYLFU", // not yet completed
         ],
         [
         "6",
         "Sep-27",
         "Sat",
-        "Python Collections + File Handling",
-        "Python OOPs (Class, Objects, Inheritance)",
+        "SQL Window Functions + Concepts",
+        "SQL HandsOn",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
-        ],
-        [
-        "6",
-        "Sep-28",
-        "Sun",
-        "SQL Basics (DDL, DML, Joins)",
-        "SQL Advanced (Window Functions, Subqueries)",
-        "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "", // not yet completed
+        "https://youtu.be/Uv6wJhAThIM", // not yet completed
         ],
     ],
     },
