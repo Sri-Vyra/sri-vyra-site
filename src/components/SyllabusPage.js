@@ -121,6 +121,24 @@ const syllabus = [
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
         "https://youtu.be/Uv6wJhAThIM", // not yet completed
         ],
+        [
+        "7",
+        "Oct-4",
+        "Sat",
+        "Python Basics: Variables, data types etc",
+        "Python HandsOn",
+        "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
+        "https://youtu.be/H26vahpOeoo", // not yet completed
+        ],
+        [
+        "7",
+        "Oct-5",
+        "Sun",
+        "Python Concepts: Statements, loops, DS",
+        "Python HandsOn",
+        "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
+        "https://youtu.be/FA7gIQ5GRMY", // not yet completed
+        ],
     ],
     },
     {
