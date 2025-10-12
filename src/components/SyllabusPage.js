@@ -148,8 +148,8 @@ const syllabus = [
     color: "from-purple-400 to-purple-600",
     schedule: [
         // Week 7
-        ["7", "Oct-04", "Sat", "Spark Introduction", "Spark Core Concepts", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["7", "Oct-05", "Sun", "RDD Basics", "RDD Actions", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["7", "Oct-11", "Sat", "Spark Introduction", "Spark Core Clusters", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/Rk2j-TgDF6A"],
+        ["7", "Oct-12", "Sun", "Spark Lazy Evaluation", "Spark Memory Management", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/FILcCa1_fcg"],
 
         // Week 8
         ["8", "Oct-11", "Sat", "RDD Transformations", "Key-Value Pair RDDs", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
