@@ -152,8 +152,8 @@ const syllabus = [
         ["7", "Oct-12", "Sun", "Spark Lazy Evaluation", "Spark Memory Management", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/FILcCa1_fcg"],
 
         // Week 8
-        ["8", "Oct-11", "Sat", "RDD Transformations", "Key-Value Pair RDDs", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["8", "Oct-12", "Sun", "Advanced RDD Operations", "Persist & Cache", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["8", "Oct-18", "Sat", "RDD Transformations", "Key-Value Pair RDDs", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/K9xrX8axmKg"],
+        ["8", "Oct-19", "Sun", "RDD Operations", "Introduction to programming", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/M4717j_4tAk"],
 
         // Week 9
         ["9", "Oct-18", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
