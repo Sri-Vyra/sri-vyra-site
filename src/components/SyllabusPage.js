@@ -156,7 +156,7 @@ const syllabus = [
         ["8", "Oct-19", "Sun", "RDD Operations", "Introduction to programming", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/M4717j_4tAk"],
 
         // Week 9
-        ["9", "Oct-18", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["9", "Oct-18", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/gQCA4QjAr_Y"],
         ["9", "Oct-19", "Sun", "DataFrame Joins", "DataFrame Aggregations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
 
         // Week 10
