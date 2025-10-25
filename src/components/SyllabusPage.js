@@ -156,20 +156,16 @@ const syllabus = [
         ["8", "Oct-19", "Sun", "RDD Operations", "Introduction to programming", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/M4717j_4tAk"],
 
         // Week 9
-        ["9", "Oct-18", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/gQCA4QjAr_Y"],
-        ["9", "Oct-19", "Sun", "DataFrame Joins", "DataFrame Aggregations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["9", "Oct-25", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/gQCA4QjAr_Y"],
+        ["9", "Oct-26", "Sun", "DataFrame Joins", "DataFrame Aggregations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
 
         // Week 10
-        ["10", "Oct-25", "Sat", "Spark SQL – Introduction", "Writing SQL Queries", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["10", "Oct-26", "Sun", "Spark SQL Joins", "Window Functions", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["10", "Nov-01", "Sat", "Spark SQL – Introduction", "Writing SQL Queries", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["10", "Nov-02", "Sun", "Spark SQL Joins", "Window Functions", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
 
         // Week 11
-        ["11", "Nov-01", "Sat", "Spark File Processing", "Working with JSON/Parquet/CSV", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["11", "Nov-02", "Sun", "Spark Performance Tuning", "Broadcast & Partitioning", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-
-        // Week 12
-        ["12", "Nov-08", "Sat", "Spark Deployment", "Standalone, YARN, Kubernetes", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["12", "Nov-09", "Sun", "Spark on Cloud (AWS/Azure/GCP)", "Final Spark Recap + Q&A", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["11", "Nov-08", "Sat", "Spark File Processing", "Working with JSON/Parquet/CSV", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["11", "Nov-09", "Sun", "Spark Performance Tuning", "Broadcast & Partitioning", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
     ],
     },
     {
