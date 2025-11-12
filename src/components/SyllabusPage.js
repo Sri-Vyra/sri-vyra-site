@@ -157,15 +157,15 @@ const syllabus = [
 
         // Week 9
         ["9", "Oct-25", "Sat", "Spark DataFrames", "Schema & Operations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/gQCA4QjAr_Y"],
-        ["9", "Oct-26", "Sun", "DataFrame Joins", "DataFrame Aggregations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["9", "Oct-26", "Sun", "DataFrame Joins", "DataFrame Aggregations", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "Preparation"],
 
         // Week 10
-        ["10", "Nov-01", "Sat", "Spark SQL – Introduction", "Writing SQL Queries", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["10", "Nov-02", "Sun", "Spark SQL Joins", "Window Functions", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["10", "Nov-01", "Sat", "Spark Joins", "Spark Window Functions", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/ypBL-a-9Jpc"],
+        ["10", "Nov-02", "Sun", "", "Resume Building", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "Interviews"],
 
         // Week 11
-        ["11", "Nov-08", "Sat", "Spark File Processing", "Working with JSON/Parquet/CSV", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
-        ["11", "Nov-09", "Sun", "Spark Performance Tuning", "Broadcast & Partitioning", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", ""],
+        ["11", "Nov-08", "Sat", "Spark Problem solving", "Working with JSON/Parquet/CSV", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/haxVRKm83f4"],
+        ["11", "Nov-09", "Sun", "Spark Problem solving", "AWS Intro", "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1", "https://youtu.be/CFUgSyjEnKA"],
     ],
     },
     {
