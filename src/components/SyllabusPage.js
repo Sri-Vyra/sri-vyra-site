@@ -181,9 +181,9 @@ const syllabus = [
         "Nov-15",
         "Sat",
         "AWS Overview & Setup",
-        "EC2 + S3 Deep Dive",
+        "EC2 + S3 Deep Dive + Glue",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "",
+        "https://youtu.be/8HfFXK5UvKc",
         ],
         [
         "13",
