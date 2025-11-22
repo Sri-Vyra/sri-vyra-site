@@ -189,10 +189,10 @@ const syllabus = [
         "13",
         "Nov-16",
         "Sun",
-        "IAM, VPC & Security",
+        "AWS Project Phase 1",
         "Hands-on Labs",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "",
+        "https://youtu.be/Is3xpSCAUjw",
         ],
 
         // Week 14
@@ -200,10 +200,10 @@ const syllabus = [
         "14",
         "Nov-22",
         "Sat",
-        "Azure Overview",
+        "AWS Project Phase 2",
         "Azure Data Lake & Databricks",
         "https://us06web.zoom.us/j/87673509113?pwd=7kFwb9x9wbW4Gw7GUOdpf6PGvZPo4Q.1",
-        "",
+        "https://youtu.be/oC_VupPHXoU",
         ],
         [
         "14",
